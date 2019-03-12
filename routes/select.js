@@ -17,11 +17,16 @@ const pool = new Pool({
 });
 
 /* SQL Query */
-var sql_query = 'SELECT * FROM student_info';
+var sql_query = 'SELECT * FROM driver';
 
 router.get('/', function(req, res, next) {
 	pool.query(sql_query, (err, data) => {
-		res.render('select', { title: 'Database Connect', data: data.rows });
+		if (err) {
+			next(err);
+		}
+		else{
+			res.render('select', { title: 'Driver List', data: data.rows });
+		}
 	});
 });
 
