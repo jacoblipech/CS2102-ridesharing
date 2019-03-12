@@ -6,21 +6,25 @@
   <body>
     <%- include('partial/nav', {title: title}); %>
     <h1>Ride Sharing: <%= title %></h1>
-		<form>
+		<form id="html_form" action="forms" role="form" method="post">
 			<div class="form-group">
 				<label for="matric">Matric Number</label>
-				<input class="form-control" id="matric" aria-describedby="matricHelp" placeholder="Enter your matric number">
+				<input type="text" class="form-control" id="matric" name="matric" aria-describedby="matricHelp" placeholder="Enter your matric number">
 				<small id="matricHelp" class="form-text text-muted">Do not share your matric number with anyone else.</small>
 			</div>
 			<div class="form-group">
 				<label for="name">Name</label>
-				<input class="form-control" id="name" placeholder="Enter your name">
+				<input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
 			</div>
 			<div class="form-group">
 				<label for="faculty">Faculty</label>
-				<input class="form-control" id="faculty" placeholder="Enter your faculty">
+				<input type="text" class="form-control" id="faculty" name="faculty" placeholder="Enter your faculty">
 			</div>
-			<button type="submit" class="btn btn-primary" onclick="show()">Submit</button>
+			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
   </body>
+  <footer>
+    <%- include partial/scripts.ejs %>
+    <script src="javascripts/userValidationScript.js"></script>
+  </footer>
 </html>

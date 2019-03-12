@@ -18,12 +18,8 @@ var aboutRouter = require('./routes/about');
 var selectRouter = require('./routes/select');
 /* ---------------------------- */
 
-/* --- V5: Adding Forms     --- */
+/* --- V5: Adding Admin Form to add users --- */
 var formsRouter = require('./routes/forms');
-/* ---------------------------- */
-
-/* --- V6: Modify Database  --- */
-var insertRouter = require('./routes/insert');
 /* ---------------------------- */
 
 var app = express();
@@ -57,7 +53,6 @@ app.use('/forms', formsRouter);
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/insert', insertRouter);
 /* ---------------------------- */
 
 // catch 404 and forward to error handler
