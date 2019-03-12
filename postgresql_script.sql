@@ -1,3 +1,6 @@
+DROP TABLE car;
+DROP TABLE driver;
+
 CREATE TABLE car(
 	cid varchar(20) PRIMARY KEY,
 	model varchar(25) NOT NULL

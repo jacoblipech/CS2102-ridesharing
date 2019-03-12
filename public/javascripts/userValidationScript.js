@@ -1,26 +1,26 @@
 function check(event) {
 	// Get Values
-	var matric  = document.getElementById('matric' ).value;
-	var name    = document.getElementById('name'   ).value;
-	var faculty = document.getElementById('faculty').value;
-	
+	var email = document.getElementById('email').value;
+	var password = document.getElementById('password').value;
+	var name = document.getElementById('name').value;
+
 	// Simple Check
-	if(matric.length != 9) {
-		alert("Invalid matric number");
+	if(email.length == 0) {
+		alert("Invalid email");
+		event.preventDefault();
+		event.stopPropagation();
+		return false;
+	}
+	if(password.length < 8) {
+		alert("Invalid password, minimum 8 characters");
 		event.preventDefault();
 		event.stopPropagation();
 		return false;
 	}
 	if(name.length == 0) {
-		alert("Invalid name");
+		alert("Please key in your name");
 		event.preventDefault();
 		event.stopPropagation();
 		return false;
 	}
-	if(faculty.length != 3) {
-		alert("Invalid faculty code");
-		event.preventDefault();
-		event.stopPropagation();
-		return false;
-	}
-}
+}

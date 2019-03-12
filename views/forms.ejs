@@ -6,25 +6,38 @@
   <body>
     <%- include('partial/nav', {title: title}); %>
     <h1>Ride Sharing: <%= title %></h1>
-		<form id="html_form" action="forms" role="form" method="post">
+		<form id="driver_form" action="forms" role="form" method="post">
 			<div class="form-group">
-				<label for="matric">Matric Number</label>
-				<input type="text" class="form-control" id="matric" name="matric" aria-describedby="matricHelp" placeholder="Enter your matric number">
-				<small id="matricHelp" class="form-text text-muted">Do not share your matric number with anyone else.</small>
+				<label for="matric">Email</label>
+				<input type="text" class="form-control" id="email" name="email" placeholder="Enter your email address">
 			</div>
 			<div class="form-group">
-				<label for="name">Name</label>
+				<label for="name">Password</label>
+				<input type="text" class="form-control" id="password" name="password" placeholder="Enter your password">
+        <small id="matricHelp" class="form-text text-muted">Do not share your password with anyone else.</small>
+			</div>
+			<div class="form-group">
+				<label for="faculty">Name</label>
 				<input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
-			</div>
-			<div class="form-group">
-				<label for="faculty">Faculty</label>
-				<input type="text" class="form-control" id="faculty" name="faculty" placeholder="Enter your faculty">
 			</div>
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
   </body>
   <footer>
     <%- include partial/scripts.ejs %>
-    <script src="javascripts/userValidationScript.js"></script>
+    <script src="/javascripts/userValidationScript.js"></script>
+    <script>
+      // function to prevent page from doing anything if not filled to standard
+      (function() {
+        window.addEventListener('load', function() {
+          // form is located by id and validation calls the form
+          var forms = [document.getElementById('driver_form')];
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            // upon submit, "check" function is called in userValidationScript.js
+            form.addEventListener('submit', check, true);
+          });
+        }, false);
+      })();
+    </script>
   </footer>
 </html>
