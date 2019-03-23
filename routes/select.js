@@ -17,7 +17,7 @@ const pool = new Pool({
 });
 
 /* SQL Query */
-var sql_query = 'SELECT * FROM driver';
+var sql_query = 'SELECT * FROM drivers';
 
 router.get('/', function(req, res, next) {
 	pool.query(sql_query, (err, data) => {
