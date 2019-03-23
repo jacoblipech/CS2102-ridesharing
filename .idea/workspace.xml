@@ -14,13 +14,21 @@
       <file leaf-file-name="postgresql_script.sql" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/postgresql_script.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1717">
-              <caret line="101" column="2" lean-forward="true" selection-start-line="101" selection-start-column="2" selection-end-line="101" selection-end-column="2" />
+            <state relative-caret-position="779">
+              <caret line="116" column="11" lean-forward="true" selection-end-line="585" selection-end-column="109" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>null</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>false</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -286,8 +294,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/postgresql_script.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1717">
-          <caret line="101" column="2" lean-forward="true" selection-start-line="101" selection-start-column="2" selection-end-line="101" selection-end-column="2" />
+        <state relative-caret-position="779">
+          <caret line="116" column="11" lean-forward="true" selection-end-line="585" selection-end-column="109" />
         </state>
       </provider>
     </entry>
