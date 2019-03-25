@@ -59,5 +59,9 @@ typings/
 
 # next.js build output
 .next
-.idea/workspace.xml
+
+# dotenv environment variables file
 .env
+
+# Intellij ide specific files
+.idea/*
