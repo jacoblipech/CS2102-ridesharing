@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
 			next(err);
 		}
 		else{
-			res.render('select', { title: 'Driver List', data: data.rows });
+			res.render('select', { title: 'Users List', data: data.rows });
 		}
 	});
 });
