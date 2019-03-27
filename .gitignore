@@ -59,10 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+# dotenv environment variables file
 .env
-.idea/CS2102-ridesharing.iml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/workspace.xml
+
+# Intellij ide specific files
+.idea/*
