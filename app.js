@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// used to store user data between HTTP requests
+var session = require('express-session');
+
 /* --- V7: Using dotenv     --- */
 require('dotenv').load();
 
@@ -22,7 +25,19 @@ var selectRouter = require('./routes/select');
 var formsRouter = require('./routes/forms');
 /* ---------------------------- */
 
+/* --- Adding passport for user authentication --- */
+var flash = require('connect-flash');
+var passport = require('passport');
+var loginRouter = require('./routes/login');
+// var formsRouter = require('./routes/signup');
+
 var app = express();
+
+app.use(session({ secret: "cs2012isamazing" })); // session secret
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+require('./config/passport.js');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -54,6 +69,10 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 /* ---------------------------- */
+
+/* --- Setting up passport  --- */
+app.use('/login', loginRouter);
+//app.use('/signup', signupRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
