@@ -30,7 +30,9 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var loginRouter = require('./routes/login');
 // var formsRouter = require('./routes/signup');
+var profileRouter = require('./routes/profile');
 
+var bodyParser = require('body-parser');
 var app = express();
 
 app.use(session({
@@ -38,6 +40,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 })); // session secret
+
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -58,18 +61,14 @@ app.use('/users', usersRouter);
 
 /* --- V2: Adding Web Pages --- */
 app.use('/about', aboutRouter);
-/* ---------------------------- */
 
 /* --- V4: Database Connect --- */
 app.use('/select', selectRouter);
-/* ---------------------------- */
 
 /* --- V5: Adding Forms     --- */
 app.use('/forms', formsRouter);
-/* ---------------------------- */
 
 /* --- V6: Modify Database  --- */
-var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 /* ---------------------------- */
@@ -77,6 +76,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 /* --- Setting up passport  --- */
 app.use('/login', loginRouter);
 //app.use('/signup', signupRouter);
+app.use('/profile', profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

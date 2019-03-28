@@ -10,10 +10,9 @@ router.get('/', function(req, res) {
 
 router.post('/', passport.authenticate('local-login', {
   failureRedirect: '/login',
+  successRedirect: '/profile',
   failureFlash: true
-}), function(req, res, info) {
-  res.render('profile', { 'message' : req.flash('message') });
-});
+}));
 
 module.exports = router;
 // DYO82HEK4KU
