@@ -33,10 +33,14 @@ var loginRouter = require('./routes/login');
 
 var app = express();
 
-app.use(session({ secret: "cs2012isamazing" })); // session secret
+app.use(session({
+  secret: "cs2012isamazing",
+  resave: true,
+  saveUninitialized: true
+})); // session secret
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 require('./config/passport.js');
 
 // view engine setup
