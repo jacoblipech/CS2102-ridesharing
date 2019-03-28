@@ -33,4 +33,14 @@ passport.use('local-login', new LocalStrategy({
   }
 ));
 
+passport.serializeUser(function(user, done) {
+  done(null, user.uid);
+});
+
+passport.deserializeUser(function(uid, done) {
+	pool.query("SELECT * FROM users WHERE uid = "+ uid, function (err, data){
+    done(err, data.rows[0]);
+  });
+});
+
 module.exports = router;
