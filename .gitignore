@@ -60,5 +60,8 @@ typings/
 # next.js build output
 .next
 
-# Intellij ide specific files
-.idea/*
+# IntelliJ
+/.idea/
+*.iml
+/out/
+/.stylelintrc.yml
