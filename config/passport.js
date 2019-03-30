@@ -13,9 +13,9 @@ passport.use('local-login', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true
-}, function (req, username, password, done) {
+}, function (req, email, password, done) {
     // var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
-    pool.query("SELECT * FROM users WHERE email = '" + username + "'", function(err, data) {
+    pool.query("SELECT * FROM users WHERE email = '" + email + "'", function(err, data) {
 			if (err) {
 				return done(req.flash('message', err));
 			}
@@ -31,6 +31,35 @@ passport.use('local-login', new LocalStrategy({
       return done(null, data.rows[0]);
     });
   }
+));
+
+passport.use('local-signup', new LocalStrategy({
+  usernameField : 'email',
+  passwordField : 'password',
+  passReqToCallback : true
+}, function(req, email, password, done) {
+    // TODO: Add trigger to check if the user trying to login already exists
+		// cannot use an SQL query as it happens async
+		var sql_query = 'INSERT INTO users VALUES';
+		var uid = req.body.uid;
+		var name = req.body.name;
+		var phonenum = req.body.phonenum;
+		var user = {
+			uid : uid,
+			name : name,
+			email : email,
+			password : password,
+			phonenum : phonenum
+		};
+		var insert_query = sql_query + "(" + uid + ",'" + name + "','" + email + "','" + password + "','" + phonenum + "');";
+    // if there is no user with that email, create the user
+		pool.query(insert_query, (err, data) => {
+	    if (err) {
+	      return done(err);
+	    }
+			return done(null, user);
+		});
+	}
 ));
 
 passport.serializeUser(function(user, done) {

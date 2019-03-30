@@ -4,12 +4,11 @@ var passport = require('passport');
 var flash = require('connect-flash');
 
 router.get('/', function(req, res) {
-  // render the page and pass in any flash data if it exists
-  res.render('login', { 'message': req.flash('message') });
+  res.render('signup', { 'message': req.flash('message') });
 });
 
-router.post('/', passport.authenticate('local-login', {
-  failureRedirect: '/login',
+router.post('/', passport.authenticate('local-signup', {
+  failureRedirect: '/signup',
   successRedirect: '/profile',
   failureFlash: true
 }));

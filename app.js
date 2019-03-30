@@ -29,7 +29,7 @@ var formsRouter = require('./routes/forms');
 var flash = require('connect-flash');
 var passport = require('passport');
 var loginRouter = require('./routes/login');
-// var formsRouter = require('./routes/signup');
+var signupRouter = require('./routes/signup');
 var profileRouter = require('./routes/profile');
 
 var bodyParser = require('body-parser');
@@ -75,7 +75,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 /* --- Setting up passport  --- */
 app.use('/login', loginRouter);
-//app.use('/signup', signupRouter);
+app.use('/signup', signupRouter);
 app.use('/profile', profileRouter);
 
 // catch 404 and forward to error handler
