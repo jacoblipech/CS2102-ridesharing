@@ -17,7 +17,7 @@ const pool = new Pool({
 });
 
 /* SQL Query */
-var sql_query = 'SELECT * FROM driver';
+var sql_query = 'SELECT * FROM users';
 
 router.get('/', function(req, res, next) {
 	pool.query(sql_query, (err, data) => {
@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
 			next(err);
 		}
 		else{
-			res.render('select', { title: 'Driver List', data: data.rows });
+			res.render('select', { title: 'Users List', data: data.rows });
 		}
 	});
 });
