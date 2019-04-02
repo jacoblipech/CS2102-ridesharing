@@ -8,13 +8,19 @@
       <h1>Ride Sharing Starter Guide</h1>
       <p>Welcome to Ride Sharing Home Page</p>
     </div>
-    <div class="container">
-      <div class="jumbotron text-center">
-        <h2><span class="fa fa-lock"></span> User Authentication</h2>
-        <p>Login or Register with:</p>
-        <a href="/login" class="btn btn-primary"><span class="fa fa-user"></span> Login</a>
-        <a href="/signup" class="btn btn-primary"><span class="fa fa-user"></span> Sign Up</a>
-      </div>
+    <% if (user) { %>
+      <%- include('partial/nav', {title: title, user: user}); %>
+      <h1>You have successfully logged in </h1>
+      <p>Shi Mei will complete this segment
+    <% } else { %>
+      <div class="container">
+        <div class="jumbotron text-center">
+          <h2><span class="fa fa-lock"></span> User Authentication</h2>
+          <p>Login or Register with:</p>
+          <a href="/login" class="btn btn-primary"><span class="fa fa-user"></span> Login</a>
+          <a href="/signup" class="btn btn-primary"><span class="fa fa-user"></span> Sign Up</a>
+        </div>
+      <% } %>
       <p>By: CS2102 Group 39</p>
     </div>
   </body>
