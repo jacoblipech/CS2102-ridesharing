@@ -8,10 +8,10 @@ function isLoggedIn(req, res, next) {
   res.redirect('/login');
 }
 
-router.get('/', isLoggedIn, function(req, res, next) {
-  res.render('about', {
-    title: 'About',
-    user : req.user
+router.get('/', isLoggedIn, function(req, res) {
+  res.render('profile', {
+    title: 'Profile',
+    user : req.user // get the user out of session and pass to template
   });
 });
 
