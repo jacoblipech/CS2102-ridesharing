@@ -40,18 +40,17 @@ passport.use('local-signup', new LocalStrategy({
 }, function(req, email, password, done) {
     // TODO: Add trigger to check if the user trying to login already exists
 		// cannot use an SQL query as it happens async
-		var sql_query = 'INSERT INTO users VALUES';
+		var sql_insert = "INSERT into Users (name, email, password, phonenum) VALUES";
 		var uid = req.body.uid;
 		var name = req.body.name;
 		var phonenum = req.body.phonenum;
 		var user = {
-			uid : uid,
 			name : name,
 			email : email,
 			password : password,
 			phonenum : phonenum
 		};
-		var insert_query = sql_query + "(" + uid + ",'" + name + "','" + email + "','" + password + "','" + phonenum + "');";
+		var insert_query = sql_insert + "('" + name + "','" + email + "','" + password + "'," + phonenum + ");";
     // if there is no user with that email, create the user
 		pool.query(insert_query, (err, data) => {
 	    if (err) {
@@ -63,11 +62,14 @@ passport.use('local-signup', new LocalStrategy({
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.uid);
+  done(null, user.email);
 });
 
-passport.deserializeUser(function(uid, done) {
-	pool.query("SELECT * FROM users WHERE uid = "+ uid, function (err, data){
+passport.deserializeUser(function(email, done) {
+	pool.query("SELECT * FROM users WHERE email = '" + email + "';", function (err, data){
+		if (err) {
+			return done(err);
+		}
     done(err, data.rows[0]);
   });
 });
