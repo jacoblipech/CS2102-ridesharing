@@ -7,8 +7,7 @@ const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
-/* SQL Query */
-var sql_query = 'INSERT INTO users VALUES';
+var sql_insert = "INSERT into Users (name, email, password, phonenum) VALUES";
 
 // GET
 router.get('/', function(req, res, next) {
@@ -18,14 +17,13 @@ router.get('/', function(req, res, next) {
 // POST (happens upon submit)
 router.post('/', function(req, res, next) {
 	// Retrieve Information
-	var newUid = 51; // TODO: need to implement auto increment here
 	var name = req.body.name;
 	var email = req.body.email;
 	var password = req.body.password;
 	var phoneNumber = req.body.phoneNumber;
 
 	// Construct Specific SQL Query
-	var insert_query = sql_query + "(" + newUid.toString() + ",'" + name + "','" + email + "','" + password + "','" + phoneNumber + "');";
+	var insert_query = sql_insert + "('" + name + "','" + email + "','" + password + "','" + phoneNumber + "');";
 	pool.query(insert_query, (err, data) => {
     if (err) {
       next(err);
