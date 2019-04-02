@@ -9,9 +9,19 @@ const pool = new Pool({
 
 var sql_insert = "INSERT into Users (name, email, password, phonenum) VALUES";
 
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
+
 // GET
-router.get('/', function(req, res, next) {
-	res.render('forms', { title: 'Admin Form' });
+router.get('/', isLoggedIn, function(req, res, next) {
+	res.render('forms', {
+		title: 'Admin Form',
+		user : req.user
+	});
 });
 
 // POST (happens upon submit)
