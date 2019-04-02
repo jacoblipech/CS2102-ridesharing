@@ -4,15 +4,19 @@
 		<%- include partial/head.ejs %>
   </head>
   <body>
-    <div class="text-center">
-      <h1>Ride Sharing Starter Guide</h1>
-      <p>Welcome to Ride Sharing Home Page</p>
-    </div>
     <% if (user) { %>
       <%- include('partial/nav', {title: title, user: user}); %>
+      <div class="text-center">
+        <h1>Ride Sharing Starter Guide</h1>
+        <p>Welcome to Ride Sharing Home Page</p>
+      </div>
       <h1>You have successfully logged in </h1>
       <p>Shi Mei will complete this segment
     <% } else { %>
+      <div class="text-center">
+        <h1>Ride Sharing Starter Guide</h1>
+        <p>Welcome to Ride Sharing Home Page</p>
+      </div>
       <div class="container">
         <div class="jumbotron text-center">
           <h2><span class="fa fa-lock"></span> User Authentication</h2>
