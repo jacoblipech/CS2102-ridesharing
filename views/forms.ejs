@@ -4,7 +4,7 @@
 		<%- include partial/head.ejs %>
   </head>
   <body>
-    <%- include('partial/nav', {title: title}); %>
+    <%- include('partial/nav', {title: title, user: user}); %>
     <h1>Ride Sharing: <%= title %></h1>
 		<form id="user_form" action="forms" role="form" method="post">
       <div class="form-group">

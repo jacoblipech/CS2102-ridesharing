@@ -2,7 +2,7 @@
 Ride sharing website for NUS database module.
 
 ## Setting up
-Ensure that you have Express JS installed on your computer. 
+Ensure that you have Express JS installed on your computer.
 To install Express JS, run `npm install ejs`.
 
 After that run `npm install` to install dependency node packages.
@@ -14,10 +14,12 @@ Ensure you change the line below in .env file to successfully connect to your ps
 `DATABASE_URL=postgres://postgres:password@localhost:5432/postgres`
 
 To start the server:
-Run `npm start` for Macbook to start the server.
+Run `npm start` for MacBook to start the server.
 
 Or
 
 Run `node bin\www` for non Mac-book users.
 
 Go to "localhost/3000" to view the pages.
+
+Alternatively, you can run `nodemon index.js` which allows you to start the server and auto updates upon saving of any file.

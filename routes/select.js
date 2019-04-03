@@ -16,16 +16,26 @@ const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
+
 /* SQL Query */
 var sql_query = 'SELECT * FROM users';
-
-router.get('/', function(req, res, next) {
+router.get('/', isLoggedIn, function(req, res, next) {
 	pool.query(sql_query, (err, data) => {
 		if (err) {
 			next(err);
 		}
 		else{
-			res.render('select', { title: 'Users List', data: data.rows });
+			res.render('select', {
+				title: 'Users List',
+				user : req.user,
+				data: data.rows
+			});
 		}
 	});
 });
