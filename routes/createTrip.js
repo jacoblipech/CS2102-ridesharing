@@ -7,16 +7,32 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL
 });
 
-/* SQL Query */
+/* Query to Create Trip */
 var sql_createTrip = 'INSERT INTO trip VALUES';
-/* SQL Query */
+/* Query to link Trip to Driver? */
 var sql_createDriver = 'INSERT INTO driver VALUES';
 
+//To Check if User is Logged in, Else redirect to login page
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
+//If user is logged in, then render the Create Trip form
+router.get('/', isLoggedIn, function(req, res, next) {
+    res.render('createTrip', {
+        title: 'Create Trip',
+        user : req.user
+    });
+});
+
 // GET
+/*
 router.get('/', function(req, res, next) {
     res.render('createTrip', { title: 'Create Trip' });
 });
-
+*/
 // POST (happens upon submit)
 router.post('/', function(req, res, next) {
     // Retrieve Information

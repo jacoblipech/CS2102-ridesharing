@@ -4,9 +4,9 @@
     <%- include partial/head.ejs %>
 </head>
 <body>
-<%- include('partial/nav', {title: title}); %>
+<%- include('partial/nav', {title: title, user: user}); %>
 <h1>Ride Sharing: <%= title %></h1>
-<form id="user_form" action="forms" role="form" method="post">
+<form id="createTrip_form" action="forms" role="form" method="post">
     <div class="form-group">
         <label for="faculty">Origin (Enter Postal Code):</label>
         <input type="text" class="form-control" id="origin" name="origin" placeholder="Enter your origin">
@@ -34,5 +34,22 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 </body>
+<footer>
+    <%- include partial/scripts.ejs %>
+    <script src="/javascripts/tripValidationScript.js"></script>
+    <script>
+        // function to prevent page from doing anything if not filled to standard
+        (function() {
+            window.addEventListener('load', function() {
+                // form is located by id and validation calls the form
+                var forms = [document.getElementById('createTrip_form')];
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    // upon submit, "check" function is called in userValidationScript.js
+                    form.addEventListener('submit', check, true);
+                });
+            }, false);
+        })();
+    </script>
+</footer>
 
 </html>
