@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <%- include partial/head.ejs %>
+  </head>
+  <body>
+    <%- include('partial/nav', {title: title, user: user}); %>
+    <h1>Ride Sharing <%= title %> Page</h1>
+    <p>Here are the list of available trips</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Pickup location</th>
+          <th scope="col">Drop off location</th>
+          <th scope="col">Pickup time</th>
+          <th scope="col">Minimum bid</th>
+          <th scope="col">Seats available</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<data.length; i++) { %>
+          <tr>
+            <td><%= data[i].origin%></td>
+            <td><%= data[i].destination%></td>
+            <td><%= data[i].starttime%></td>
+            <td><%= data[i].minbid%></td>
+            <td><%= data[i].numpassengers%></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </body>
+  <footer>
+    <%- include partial/scripts.ejs %>
+  </footer>
+</html>
