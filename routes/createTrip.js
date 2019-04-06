@@ -27,12 +27,6 @@ router.get('/', isLoggedIn, function(req, res, next) {
     });
 });
 
-// GET
-/*
-router.get('/', function(req, res, next) {
-    res.render('createTrip', { title: 'Create Trip' });
-});
-*/
 // POST (happens upon submit)
 router.post('/', function(req, res, next) {
     // Retrieve Information
@@ -40,16 +34,17 @@ router.post('/', function(req, res, next) {
     var destination = req.body.destination;
     var maxBid = req.body.maxBid;
     var minBid = req.body.minBid;
-    //var starttime = req.body.startTime;
-    var starttime = Date.parse($('#startTime').val());
+    var startTime = req.body.startTime;
+    // console.log(startTime);
     var numpassengers = req.body.numpassengers;
-    var cid = 1;
+    var cid = 100;
     var iscomplete = false;
 
     // Construct Specific SQL Query
     var insert_queryTrip = sql_createTrip + "(" + origin + ", " + destination + ", " + maxBid + ", "
-        + minBid + ", '" + starttime + "', " + numpassengers+ ", " + cid + ", " + iscomplete + ")";
+        + minBid + ", '" + startTime + "', " + numpassengers + ", " + cid + ", " + iscomplete + ")";
     //Finally Insert into Database
+    // console.log(insert_queryTrip);
     pool.query(insert_queryTrip, (err, data) => {
         if (err) {
             next(err);

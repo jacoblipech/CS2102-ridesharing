@@ -6,10 +6,10 @@
 <body>
 <%- include('partial/nav', {title: title, user: user}); %>
 <h1>Ride Sharing: <%= title %></h1>
-<form id="createTrip_form" action="forms" role="form" method="post">
+  <form id="createTrip_form" action="/createTrip" role="form" method="post">
     <div class="form-group">
-        <label for="faculty">Origin (Enter Postal Code):</label>
-        <input type="number" class="form-control" id="origin" name="origin" placeholder="Enter your origin">
+      <label for="faculty">Origin (Enter Postal Code):</label>
+      <input type="number" class="form-control" id="origin" name="origin" placeholder="Enter your origin">
     </div>
     <div class="form-group">
         <label for="email">Destination (Enter Postal Code):</label>
@@ -32,7 +32,7 @@
         <input type="number" class="form-control" id="numpassengers" name="numpassengers" placeholder="Enter the maximum number of passengers">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+  </form>
 </body>
 <footer>
     <%- include partial/scripts.ejs %>
