@@ -25,6 +25,10 @@ var selectRouter = require('./routes/select');
 var formsRouter = require('./routes/forms');
 /* ---------------------------- */
 
+/* --- V7: Adding Admin Form to add users --- */
+var tripsRouter = require('./routes/trips');
+/* ---------------------------- */
+
 /* --- Adding passport for user authentication --- */
 var flash = require('connect-flash');
 var passport = require('passport');
@@ -67,6 +71,9 @@ app.use('/select', selectRouter);
 
 /* --- V5: Adding Forms     --- */
 app.use('/forms', formsRouter);
+
+/* --- V7: Adding Trips     --- */
+app.use('/trips', tripsRouter);
 
 /* --- V6: Modify Database  --- */
 app.use(bodyParser.json());
