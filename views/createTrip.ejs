@@ -9,27 +9,27 @@
 <form id="createTrip_form" action="forms" role="form" method="post">
     <div class="form-group">
         <label for="faculty">Origin (Enter Postal Code):</label>
-        <input type="text" class="form-control" id="origin" name="origin" placeholder="Enter your origin">
+        <input type="number" class="form-control" id="origin" name="origin" placeholder="Enter your origin">
     </div>
     <div class="form-group">
         <label for="email">Destination (Enter Postal Code):</label>
-        <input type="text" class="form-control" id="destination" name="destination" placeholder="Enter your destination">
+        <input type="number" class="form-control" id="destination" name="destination" placeholder="Enter your destination">
     </div>
     <div class="form-group">
         <label for="password">Maximum Bid</label>
-        <input type="text" class="form-control" id="maxBid" name="maxBid" placeholder="Enter your max bid">
+        <input type="number" step="0.01" min=0 class="form-control" id="maxBid" name="maxBid" placeholder="Enter your max bid">
     </div>
     <div class="form-group">
         <label for="password">Minimum Bid</label>
-        <input type="text" class="form-control" id="minBid" name="minBid" placeholder="Enter your min bid">
+        <input type="number" step="0.01" min=0 class="form-control" id="minBid" name="minBid" placeholder="Enter your min bid">
     </div>
     <div class="form-group">
         <label for="password">Start Time</label>
-        <input type="text" class="form-control" id="startTime" name="startTime" placeholder="Enter your Start Time">
+        <input type="date" class="form-control" id="startTime" name="startTime" placeholder="Enter your Start Time EG: 2018-07-01 05:23:57">
     </div>
     <div class="form-group">
         <label for="password">Number of Passengers</label>
-        <input type="text" class="form-control" id="numpassengers" name="numpassengers" placeholder="Enter the maximum number of passengers">
+        <input type="number" class="form-control" id="numpassengers" name="numpassengers" placeholder="Enter the maximum number of passengers">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

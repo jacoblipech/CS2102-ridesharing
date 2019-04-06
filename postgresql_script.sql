@@ -73,17 +73,17 @@ CREATE TABLE Trips (
 	destination INTEGER NOT NULL,
 	maxbid INTEGER NOT NULL,
 	minbid INTEGER NOT NULL,
-    starttime TIMESTAMP NOT NULL,
-    cid INTEGER NOT NULL,
-    numpassengers INTEGER,
-    iscomplete BOOLEAN,
+  starttime TIMESTAMP NOT NULL,
+  cid INTEGER NOT NULL,
+  numpassengers INTEGER,
+  iscomplete BOOLEAN,
     FOREIGN KEY(cid) REFERENCES Cars ON DELETE CASCADE
 );
 
 CREATE TABLE Creates (
 	uid INTEGER,
 	tid INTEGER,
-    created TIMESTAMP,
+  created TIMESTAMP,
 	PRIMARY KEY(uid, tid),
 	FOREIGN KEY(uid) REFERENCES Drivers ON DELETE CASCADE,
 	FOREIGN KEY(tid) REFERENCES Trips ON DELETE CASCADE

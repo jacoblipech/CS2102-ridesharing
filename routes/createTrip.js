@@ -8,7 +8,7 @@ const pool = new Pool({
 });
 
 /* Query to Create Trip */
-var sql_createTrip = 'INSERT INTO trip VALUES';
+var sql_createTrip = "insert into Trips (origin, destination, maxbid, minbid, starttime, cid, numpassengers, iscomplete) values ";
 /* Query to link Trip to Driver? */
 var sql_createDriver = 'INSERT INTO driver VALUES';
 
@@ -40,13 +40,15 @@ router.post('/', function(req, res, next) {
     var destination = req.body.destination;
     var maxBid = req.body.maxBid;
     var minBid = req.body.minBid;
-    var starttime = req.body.startTime;
+    //var starttime = req.body.startTime;
+    var starttime = Date.parse($('#startTime').val());
     var numpassengers = req.body.numpassengers;
+    var cid = 1;
     var iscomplete = false;
 
     // Construct Specific SQL Query
-    var insert_queryTrip = sql_createTrip + "('" + origin + "','" + destination + "','" + maxBid + "','"
-        + minBid + "," + starttime + "," + numpassengers+ "," + iscomplete + "')";
+    var insert_queryTrip = sql_createTrip + "(" + origin + ", " + destination + ", " + maxBid + ", "
+        + minBid + ", '" + starttime + "', " + numpassengers+ ", " + cid + ", " + iscomplete + ")";
     //Finally Insert into Database
     pool.query(insert_queryTrip, (err, data) => {
         if (err) {
