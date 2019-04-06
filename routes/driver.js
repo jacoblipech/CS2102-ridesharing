@@ -7,17 +7,50 @@ const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
-/* SQL Query */
-var sql_query = 'SELECT * FROM users';
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
 
+// GET
+// router.get('/', isLoggedIn, function(req, res, next) {
+// 	res.render('driver', {
+// 		title: 'Sign up as driver',
+// 		user : req.user
+// 	});
+// });
+
+/* GET driver sign up page. */
 router.get('/', function(req, res, next) {
-	pool.query(sql_query, (err, data) => {
-		if (err) {
-			next(err);
-		}
-		else{
-			res.render('select', { title: 'Users List', data: data.rows });
-		}
+	res.render('driver', { 
+		title: 'Driver Sign Up Form', 
+		user: data.rows });
+});
+
+// POST (happens upon submit)
+router.post('/', function(req, res, next) {
+	// Retrieve Information
+	var carModel = req.body.carModel;
+	var numSeats = req.body.numSeats;
+	var carDescription = req.body.carDescription;
+
+	/* SQL Query */
+	var currCarID = "INSERT into Cars(dummy) VALUES('NULL') RETURNING cid";
+	var sql_insert_carspecs = "INSERT into Carspecs (currCarID, numSeats, carModel, carDescription) VALUES";
+	
+	// Construct Specific SQL Query
+	// this may not work. Unable to verify
+	var insert_query = sql_insert_carspecs + "('" + currCarID + "','" + numSeats + "','" + carModel + "','" + carDescription + "');";
+
+	pool.query(insert_query, (err, data) => {
+    if (err) {
+      next(err);
+    }
+    else {
+      res.redirect('/select')
+    }
 	});
 });
 
