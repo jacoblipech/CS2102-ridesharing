@@ -16,6 +16,8 @@ const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
+var sql_insert = "INSERT into Bids (uid, tid, amount) VALUES";
+
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -24,7 +26,7 @@ function isLoggedIn(req, res, next) {
 }
 
 /* SQL Query */
-var sql_query = 'SELECT * FROM trips';
+var sql_query = 'SELECT * FROM Trips';
 router.get('/', isLoggedIn, function(req, res, next) {
 	pool.query(sql_query, (err, data) => {
 		if (err) {
@@ -37,6 +39,26 @@ router.get('/', isLoggedIn, function(req, res, next) {
 				data: data.rows
 			});
 		}
+	});
+});
+
+// POST (happens upon submit)
+router.post('/', function(req, res, next) {
+	// Retrieve Information
+	var tid = req.body.tidHidden;
+	var bidamount = req.body.bidamount;
+	var userId = req.user.uid;
+
+	// Construct Specific SQL Query
+	var insert_query = sql_insert + "(" + userId + "," + tid + "," + bidamount + ") ON CONFLICT (uid,tid) DO UPDATE SET amount = " + bidamount + ";";
+	//var insert_query = "SELECT * from Trips";
+	pool.query(insert_query, (err, data) => {
+    if (err) {
+      next(err);
+    }
+    else {
+      res.redirect('/trips')
+    }
 	});
 });
 

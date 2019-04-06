@@ -6,16 +6,15 @@
   <body>
     <%- include('partial/nav', {title: title, user: user}); %>
     <h1>Ride Sharing <%= title %> Page</h1>
-    <p>Here are the list of available trips</p>
+    <p>Here are all the bids you made</p>
     <table class="table">
       <thead>
         <tr>
           <th scope="col">Pickup location</th>
           <th scope="col">Drop off location</th>
           <th scope="col">Pickup time</th>
-          <th scope="col">Minimum bid</th>
-          <th scope="col">Seats available</th>
-          <th scope="col">Bid</th>
+          <th scope="col">Your Bid</th>
+          <th scope="col">Bid Accepted?</th>
         </tr>
       </thead>
       <tbody>
@@ -24,9 +23,8 @@
             <td><%= data[i].origin%></td>
             <td><%= data[i].destination%></td>
             <td><%= data[i].starttime%></td>
-            <td><%= data[i].minbid%></td>
-            <td><%= data[i].numpassengers%></td>
-            <td><form id="bid_form<%= i %>" action="trips" role="form" method="post"><input type="text" class="form-control" id="bid" name="bidamount" placeholder="0.00"><input type="hidden" id="hiddenBid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="bidsubmit" value="Bid"></form></td>
+            <td><%= data[i].amount%></td>
+            <td><%= data[i].isconfirmed%></td>
           </tr>
         <% } %>
       </tbody>

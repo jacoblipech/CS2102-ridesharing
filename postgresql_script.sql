@@ -94,7 +94,7 @@ CREATE TABLE Bids (
 	uid INTEGER NOT NULL,
 	tid INTEGER NOT NULL,
 	amount REAL NOT NULL,
-    isconfirmed BOOLEAN,
+    isconfirmed BOOLEAN DEFAULT FALSE,
     PRIMARY KEY(uid, tid),
 	FOREIGN KEY(uid) REFERENCES Passengers ON DELETE CASCADE,
 	FOREIGN KEY(tid) REFERENCES Trips ON DELETE CASCADE
@@ -118,7 +118,7 @@ insert into Users (name, email, password, phonenum) values ('Raynard McDavid', '
 insert into Users (name, email, password, phonenum) values ('Melania Extil', 'mextil1@liveinternet.ru', 'KFrwh3XP2WV', 94682037);
 insert into Users (name, email, password, phonenum) values ('Jacquenetta Agiolfinger', 'jagiolfinger2@bloglines.com', 'RrClJKj', 95985431);
 insert into Users (name, email, password, phonenum) values ('Wallache Pycock', 'wpycock3@auda.org.au', '5caEPys', 92116656);
-insert into Users (name, email, password, phonenum) values ('Jerrilyn Jacombs', 'jjacombs4@apache.org', 'uzZs5pBSfe', 91309243);
+insert into Users (name, email, password, phonenum) values ('Super User', 'a@a', 'a', 91309243);
 insert into Users (name, email, password, phonenum) values ('Gretna Fernez', 'gfernez5@springer.com', '2FEFLPmbUM', 99689932);
 insert into Users (name, email, password, phonenum) values ('Roslyn Rebanks', 'rrebanks6@smugmug.com', 'n6x6mVtuxs', 95098658);
 insert into Users (name, email, password, phonenum) values ('Georgiana Popworth', 'gpopworth7@comsenz.com', 'UBZegbdzzK6r', 98810014);
