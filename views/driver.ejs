@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<%- include partial/head.ejs %>
+  </head>
+  <body>
+    <%- include('partial/nav', {title: "Driver Sign Up"}); %>
+    <h1>Ride Sharing: <%= title %></h1>
+    <
+		<form action="/driver-sign-up" method="post">
+      <div class="form-group">
+        <label>Car model</label>
+        <input type="car-model" class="form-control" name="car-model">
+      </div>
+      <div class="form-group">
+        <label>Number of seats</label>
+        <input type="num-seats" class="form-control" name="num-seats">
+      </div>
+      <div class="form-group">
+        <label>Car description</label>
+        <input type="car-description" class="form-control" name="car-description">
+      </div>
+      <button type="submit" class="btn btn-warning btn-lg">Submit</button>
+    </form>
+  </body>
+  <footer>
+    <%- include partial/scripts.ejs %>
+  </footer>
+</html>
