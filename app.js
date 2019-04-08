@@ -36,6 +36,7 @@ var passport = require('passport');
 var loginRouter = require('./routes/login');
 var signupRouter = require('./routes/signup');
 var profileRouter = require('./routes/profile');
+var driverRouter = require('./routes/driver');
 
 var bodyParser = require('body-parser');
 var app = express();
@@ -86,6 +87,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/profile', profileRouter);
+app.use('/driver', driverRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

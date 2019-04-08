@@ -11,13 +11,13 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/driver');
 }
 
 // GET
 router.get('/', isLoggedIn, function(req, res, next) {
 	res.render('driver', {
-		title: 'Sign up as driver',
+		title: 'Sign up as a driver',
 		user : req.user
 	});
 });
