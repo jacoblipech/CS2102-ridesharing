@@ -16,20 +16,28 @@
         <input type="number" class="form-control" id="destination" name="destination" placeholder="Enter your destination">
     </div>
     <div class="form-group">
-        <label for="password">Maximum Bid</label>
+        <label for="maxbid">Maximum Bid</label>
         <input type="number" step="0.01" min=0 class="form-control" id="maxBid" name="maxBid" placeholder="Enter your max bid">
     </div>
     <div class="form-group">
-        <label for="password">Minimum Bid</label>
+        <label for="minbid">Minimum Bid</label>
         <input type="number" step="0.01" min=0 class="form-control" id="minBid" name="minBid" placeholder="Enter your min bid">
     </div>
     <div class="form-group">
-        <label for="password">Start Time</label>
+        <label for="startTime">Start Time</label>
         <input type="date" class="form-control" id="startTime" name="startTime" placeholder="Enter your Start Time EG: 2018-07-01 05:23:57">
     </div>
     <div class="form-group">
-        <label for="password">Number of Passengers</label>
+        <label for="numpassengers">Number of Passengers</label>
         <input type="number" class="form-control" id="numpassengers" name="numpassengers" placeholder="Enter the maximum number of passengers">
+    </div>
+    <div class="form-group">
+        <label for="cid">Select which car to use for this trip</label>
+        <select class="form-control" id="cid" name="cid" >
+            <% for(var i=0; i<data.length; i++) { %>
+                <option value="<%= data[i].cid%>"><%= data[i].carplate%></option>
+            <% } %>
+        </select>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

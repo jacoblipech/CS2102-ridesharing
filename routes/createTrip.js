@@ -7,8 +7,7 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL
 });
 
-/* Query to Create Trip */
-var sql_createTrip = "insert into Trips (origin, destination, maxbid, minbid, starttime, cid, numpassengers, iscomplete) values ";
+
 /* Query to link Trip to Driver? */
 var sql_createDriver = 'INSERT INTO driver VALUES';
 
@@ -19,15 +18,28 @@ function isLoggedIn(req, res, next) {
     }
     res.redirect('/login');
 }
-//If user is logged in, then render the Create Trip form
+
+/* SQL Query */
+var sql_query = "SELECT * from Owns INNER JOIN Cars using (cid) where (uid = ";
 router.get('/', isLoggedIn, function(req, res, next) {
-    res.render('createTrip', {
-        title: 'Create Trip',
-        user : req.user
-    });
+	pool.query(sql_query + req.user.uid + ");", (err, data) => {
+		if (err) {
+			next(err);
+		}
+		else{
+			res.render('createTrip', {
+				title: 'Create Trip',
+				user : req.user,
+				data: data.rows
+			});
+		}
+	});
 });
 
+
 // POST (happens upon submit)
+/* Query to Create Trip */
+var sql_createTrip = "insert into Trips (origin, destination, maxbid, minbid, starttime, cid, numpassengers) values ";
 router.post('/', function(req, res, next) {
     // Retrieve Information
     var origin  = req.body.origin;
@@ -37,12 +49,13 @@ router.post('/', function(req, res, next) {
     var startTime = req.body.startTime;
     // console.log(startTime);
     var numpassengers = req.body.numpassengers;
-    var cid = 100;
-    var iscomplete = false;
+    var cid = req.body.cid;
 
     // Construct Specific SQL Query
-    var insert_queryTrip = sql_createTrip + "(" + origin + ", " + destination + ", " + maxBid + ", "
-        + minBid + ", '" + startTime + "', " + numpassengers + ", " + cid + ", " + iscomplete + ")";
+    var insert_queryTrip = "DO $$ DECLARE newTid integer; BEGIN " + sql_createTrip + "(" + origin + ", " + destination
+    + ", " + maxBid + ", " + minBid + ", '" + startTime + "', " + cid + ", " + numpassengers + ") RETURNING tid INTO newTid;"
+    + "INSERT INTO Creates VALUES (" + req.user.uid + ", newTid); END $$;";
+    //var insert_queryTrip = "SELECT * from Trips";
     //Finally Insert into Database
     // console.log(insert_queryTrip);
     pool.query(insert_queryTrip, (err, data) => {
@@ -51,7 +64,8 @@ router.post('/', function(req, res, next) {
         }
         else {
             //redirect to /allTrips later
-            res.redirect('/select')
+
+            res.redirect("/select")
         }
     });
 });
