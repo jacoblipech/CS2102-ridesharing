@@ -15,18 +15,11 @@ function isLoggedIn(req, res, next) {
 }
 
 // GET
-// router.get('/', isLoggedIn, function(req, res, next) {
-// 	res.render('driver', {
-// 		title: 'Sign up as driver',
-// 		user : req.user
-// 	});
-// });
-
-/* GET driver sign up page. */
-router.get('/', function(req, res, next) {
-	res.render('driver', { 
-		title: 'Driver Sign Up Form', 
-		user: data.rows });
+router.get('/', isLoggedIn, function(req, res, next) {
+	res.render('driver', {
+		title: 'Sign up as driver',
+		user : req.user
+	});
 });
 
 // POST (happens upon submit)
@@ -35,14 +28,15 @@ router.post('/', function(req, res, next) {
 	var carModel = req.body.carModel;
 	var numSeats = req.body.numSeats;
 	var carDescription = req.body.carDescription;
+	var carPlate = req.body.carPlate;
 
 	/* SQL Query */
 	var currCarID = "INSERT into Cars(dummy) VALUES('NULL') RETURNING cid";
-	var sql_insert_carspecs = "INSERT into Carspecs (currCarID, numSeats, carModel, carDescription) VALUES";
+	var sql_insert_carspecs = "INSERT into Carspecs (currCarID, numSeats, carModel, carDescription, carPlate) VALUES";
 	
 	// Construct Specific SQL Query
 	// this may not work. Unable to verify
-	var insert_query = sql_insert_carspecs + "('" + currCarID + "','" + numSeats + "','" + carModel + "','" + carDescription + "');";
+	var insert_query = sql_insert_carspecs + "('" + currCarID + "','" + numSeats + "','" + carModel + "','" + carDescription + "','" + carPlate + "');";
 
 	pool.query(insert_query, (err, data) => {
     if (err) {
