@@ -25,6 +25,11 @@ var selectRouter = require('./routes/select');
 var formsRouter = require('./routes/forms');
 /* ---------------------------- */
 
+/* --- V7: Bidding System --- */
+var tripsRouter = require('./routes/trips');
+var bidsRouter = require('./routes/bids');
+/* ---------------------------- */
+
 /* --- Adding passport for user authentication --- */
 var flash = require('connect-flash');
 var passport = require('passport');
@@ -67,6 +72,10 @@ app.use('/select', selectRouter);
 
 /* --- V5: Adding Forms     --- */
 app.use('/forms', formsRouter);
+
+/* --- V7: Adding Trips     --- */
+app.use('/trips', tripsRouter);
+app.use('/bids', bidsRouter);
 
 /* --- V6: Modify Database  --- */
 app.use(bodyParser.json());
