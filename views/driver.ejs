@@ -4,20 +4,25 @@
 		<%- include partial/head.ejs %>
   </head>
   <body>
-    <%- include('partial/nav', {title: "Driver Sign Up"}); %>
+    <!-- <%- include('partial/nav', {title: "Driver Sign Up"}); %> -->
+    <%- include('partial/nav', {title: title, user: user}); %>
     <h1>Ride Sharing: <%= title %></h1>
     <
-		<form action="/driver-sign-up" method="post">
+		<form action="/driver" method="post">
       <div class="form-group">
-        <label>Car model</label>
+        <label for>Car model: </label>
         <input type="car-model" class="form-control" name="car-model">
       </div>
       <div class="form-group">
-        <label>Number of seats</label>
+        <label for>Car plate: </label>
+        <input type="car-plate" class="form-control" name="car-plate">
+      </div>
+      <div class="form-group">
+        <label for>Number of seats</label>
         <input type="num-seats" class="form-control" name="num-seats">
       </div>
       <div class="form-group">
-        <label>Car description</label>
+        <label for>Car description</label>
         <input type="car-description" class="form-control" name="car-description">
       </div>
       <button type="submit" class="btn btn-warning btn-lg">Submit</button>
