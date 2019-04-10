@@ -767,6 +767,24 @@ BEFORE INSERT ON Trips
 FOR EACH ROW
 EXECUTE PROCEDURE add_new_trip();
 
+--Ensure that no duplicates for email and phone number upon sign up
+CREATE OR REPLACE FUNCTION user_signup()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' AND NOT EXISTS(SELECT 1 FROM Users U WHERE (U.email = NEW.email OR U.phonenum = NEW.phonenum) ) THEN
+      RETURN NEW;
+  ELSE
+      RETURN NULL;
+  END IF;
+END; $$ LANGUAGE plpgsql;
+
+DROP TRIGGER new_signup on Users;
+
+CREATE TRIGGER new_signup
+BEFORE INSERT ON Users
+FOR EACH ROW
+EXECUTE PROCEDURE user_signup();
+
 
 
 
