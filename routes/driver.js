@@ -48,6 +48,9 @@ router.post('/', function(req, res, next) {
 
 	pool.query(insert_newCar, (err, data) => {
         if (err) {
+            if (err.code == 23505) {
+                res.redirect('/carplateexists')
+            }
             next(err);
         }
         else {
