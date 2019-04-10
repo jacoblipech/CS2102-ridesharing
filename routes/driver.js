@@ -25,18 +25,28 @@ router.get('/', isLoggedIn, function(req, res, next) {
 // POST (happens upon submit)
 router.post('/', function(req, res, next) {
 	// Retrieve Information
-	var carModel = req.body.carModel;
-	var numSeats = req.body.numSeats;
-	var carDescription = req.body.carDescription;
-	var carPlate = req.body.carPlate;
+	var carModel = req.body.car-model;
+	var numSeats = req.body.num-seats;
+	var carDescription = req.body.car-description;
+	var carPlate = req.body.car-plate;
 
 	/* SQL Query */
-	var currCarID = "INSERT into Cars(dummy) VALUES('NULL') RETURNING cid";
-	var sql_insert_carspecs = "INSERT into Carspecs (currCarID, numSeats, carModel, carDescription, carPlate) VALUES";
-	
+	// var currCarID = "INSERT into Cars(dummy) VALUES('NULL') RETURNING cid";
+	// var sql_insert_carspecs = "INSERT into Carspecs (currCarID, numSeats, carModel, carDescription, carPlate) VALUES";
+
+	var sql_insert_first = 'with first_insert as (' +
+						'INSERT into Cars(carPlate)' +
+						'VALUES ';
+	var sql_insert_second = 'RETURNING cid ' +
+							'),' +
+							'second_insert as (' +
+								'INSERT into Carspecs(cid, numSeats, carModel, carDescription)' +
+								'VALUES (SELECT cid from first_insert, '
+
 	// Construct Specific SQL Query
-	// this may not work. Unable to verify
-	var insert_query = sql_insert_carspecs + "('" + currCarID + "','" + numSeats + "','" + carModel + "','" + carDescription + "','" + carPlate + "');";
+	var insert_query = sql_insert + "('" + currCarID + "','" + numSeats + "','" + carModel + "','" + carDescription + "','" + carPlate + "');";
+
+	var insert_query = sql_insert_first + "('" + carPlate + "')" + sql_insert_second + "('" + numSeats + "','" + carModel + "','" + carDescription + "','" + carPlate + "');";
 
 	pool.query(insert_query, (err, data) => {
     if (err) {
