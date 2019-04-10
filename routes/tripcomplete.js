@@ -17,7 +17,7 @@ function isLoggedIn(req, res, next) {
 /* SQL Query */
 var sql_query = 'SELECT * FROM Trips T INNER JOIN Creates C using (tid) WHERE (uid = ';
 router.get('/', isLoggedIn, function(req, res, next) {
-	pool.query(sql_query + req.user.uid + ');', (err, data) => {
+	pool.query(sql_query + req.user.uid + ') ORDER BY starttime;', (err, data) => {
 	    console.log(router.stack);
 		if (err) {
 			next(err);
