@@ -16,8 +16,6 @@ const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
-var sql_insert = "INSERT into Bids (uid, tid, amount) VALUES";
-
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -26,16 +24,16 @@ function isLoggedIn(req, res, next) {
 }
 
 /* SQL Query */
-var sql_query = "SELECT * FROM Trips WHERE (iscomplete = False);";
+var sql_query = 'SELECT * FROM Trips T INNER JOIN Creates C using (tid) WHERE (uid = ';
 router.get('/', isLoggedIn, function(req, res, next) {
-	pool.query(sql_query, (err, data) => {
+	pool.query(sql_query + req.user.uid + ');', (err, data) => {
 	    console.log(router.stack);
 		if (err) {
 			next(err);
 		}
 		else{
-			res.render('trips', {
-				title: 'Trips List',
+			res.render('tripComplete', {
+				title: 'Complete Trips',
 				user : req.user,
 				data: data.rows
 			});
@@ -47,18 +45,17 @@ router.get('/', isLoggedIn, function(req, res, next) {
 router.post('/', function(req, res, next) {
 	// Retrieve Information
 	var tid = req.body.tidHidden;
-	var bidamount = req.body.bidamount;
 	var userId = req.user.uid;
 
 	// Construct Specific SQL Query
-	var insert_query = sql_insert + "(" + userId + "," + tid + "," + bidamount + ") ON CONFLICT (uid,tid) DO UPDATE SET amount = " + bidamount + ";";
-	//var insert_query = "SELECT * from Trips";
-	pool.query(insert_query, (err, data) => {
+	var update_query = "UPDATE Trips SET iscomplete = TRUE WHERE (tid = " + tid + ");";
+	//var update_query = "SELECT * from Trips";
+	pool.query(update_query, (err, data) => {
     if (err) {
       next(err);
     }
     else {
-      res.redirect('/trips')
+      res.redirect('/tripcomplete')
     }
 	});
 });
