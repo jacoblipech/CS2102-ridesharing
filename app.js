@@ -35,6 +35,7 @@ var createTripRouter = require('./routes/createTrip');
 var tripsRouter = require('./routes/trips');
 var bidsRouter = require('./routes/bids');
 var seeBidsRouter = require('./routes/seebids');
+var tripCompleteRouter = require('./routes/tripcomplete');
 /* ---------------------------- */
 
 /* --- V8: Drivers and Passenger Sign up  --- */
@@ -92,6 +93,7 @@ app.use('/createTrip', createTripRouter);
 app.use('/trips', tripsRouter);
 app.use('/bids', bidsRouter);
 app.use('/seebids', seeBidsRouter);
+app.use('/tripcomplete', tripCompleteRouter);
 
 /* --- V6: Modify Database  --- */
 app.use(bodyParser.json());
