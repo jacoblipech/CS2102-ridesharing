@@ -702,7 +702,9 @@ ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 --AFTER INSERT OR UPDATE ON Users
 --FOR EACH ROW
 --EXECUTE PROCEDURE add_to_passengers();
-
+DROP TRIGGER bid_accepted on Bids;
+DROP TRIGGER new_trip on Trips;
+DROP TRIGGER new_signup on Users;
 
 --Ensures that Driver cannot accept more passengers than indicated in numpassengers
 CREATE OR REPLACE FUNCTION get_acceptedpassengers(thetid INTEGER)
@@ -733,7 +735,6 @@ BEGIN
   END IF;
 END; $$ LANGUAGE plpgsql;
 
-DROP TRIGGER bid_accepted on Bids;
 
 CREATE TRIGGER bid_accepted
 BEFORE UPDATE ON Bids
@@ -760,8 +761,6 @@ BEGIN
   END IF;
 END; $$ LANGUAGE plpgsql;
 
-DROP TRIGGER new_trip on Trips;
-
 CREATE TRIGGER new_trip
 BEFORE INSERT ON Trips
 FOR EACH ROW
@@ -778,7 +777,7 @@ BEGIN
   END IF;
 END; $$ LANGUAGE plpgsql;
 
-DROP TRIGGER new_signup on Users;
+
 
 CREATE TRIGGER new_signup
 BEFORE INSERT ON Users

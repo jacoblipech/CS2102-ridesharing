@@ -44,7 +44,7 @@ router.post('/', function(req, res, next) {
     var insert_newCar = "DO $$ DECLARE newCid integer; BEGIN " + "INSERT into Cars (carplate) VALUES ('" + carPlate + "') RETURNING cid INTO newCid;"
     + "INSERT INTO Carspecs (cid, seats, model, description) values (newCid, " + numSeats + ",'" + carModel + "','" + carDescription + "');" +
     " INSERT INTO Drivers (uid) VALUES (" + req.user.uid + ") ON CONFLICT DO NOTHING; INSERT INTO Owns (uid,cid) VALUES (" + req.user.uid + ",newCid); END $$;";
-    //var insert_newCar = "SELECT * from Cars;";
+    //var dummy_newCar = "SELECT * from Cars;";
 
 	pool.query(insert_newCar, (err, data) => {
         if (err) {
