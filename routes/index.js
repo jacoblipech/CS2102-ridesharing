@@ -8,4 +8,9 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/'); //Can fire before session is destroyed?
+});
+
 module.exports = router;
