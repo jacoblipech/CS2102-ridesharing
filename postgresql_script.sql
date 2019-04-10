@@ -685,3 +685,21 @@ insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea
 
 ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 
+CREATE OR REPLACE FUNCTION add_to_passengers()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+  INSERT INTO passengers (uid)
+  VALUES(NEW.uid);
+  END IF;
+  RETURN NULL;
+END; $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER user_created
+AFTER INSERT OR UPDATE ON Users
+FOR EACH ROW
+EXECUTE PROCEDURE add_to_passengers();
+
+
+
+

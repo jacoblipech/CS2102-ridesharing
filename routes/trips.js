@@ -52,13 +52,14 @@ router.post('/', function(req, res, next) {
 
 	// Construct Specific SQL Query
 	var insert_query = sql_insert + "(" + userId + "," + tid + "," + bidamount + ") ON CONFLICT (uid,tid) DO UPDATE SET amount = " + bidamount + ";";
-	//var insert_query = "SELECT * from Trips";
+	//var dummy_query = "SELECT * from Trips";
 	pool.query(insert_query, (err, data) => {
     if (err) {
       next(err);
     }
     else {
       res.redirect('/trips')
+      //res.redirect('/' + dummy_query)
     }
 	});
 });
