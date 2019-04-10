@@ -26,9 +26,9 @@ function isLoggedIn(req, res, next) {
 }
 
 /* SQL Query */
-var sql_query = "SELECT * FROM Trips WHERE (iscomplete = False);";
+var sql_query = "SELECT * FROM Creates C INNER JOIN Trips T using (tid) WHERE (iscomplete = False AND NOT uid = ";
 router.get('/', isLoggedIn, function(req, res, next) {
-	pool.query(sql_query, (err, data) => {
+	pool.query(sql_query + req.user.uid + ");", (err, data) => {
 	    console.log(router.stack);
 		if (err) {
 			next(err);
