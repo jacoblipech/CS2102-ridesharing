@@ -686,25 +686,25 @@ insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea
 
 ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 
-CREATE OR REPLACE FUNCTION add_to_passengers()
-RETURNS TRIGGER AS $$
-BEGIN
-  IF TG_OP = 'INSERT' THEN
-  INSERT INTO passengers (uid)
-  VALUES(NEW.uid);
-  END IF;
-  RETURN NULL;
-END; $$ LANGUAGE plpgsql;
+--CREATE OR REPLACE FUNCTION add_to_passengers()
+--RETURNS TRIGGER AS $$
+--BEGIN
+--  IF TG_OP = 'INSERT' THEN
+--  INSERT INTO passengers (uid)
+--  VALUES(NEW.uid);
+--  END IF;
+--  RETURN NULL;
+--END; $$ LANGUAGE plpgsql;
+--
+--DROP TRIGGER user_created ON Users;
+--
+--CREATE TRIGGER user_created
+--AFTER INSERT OR UPDATE ON Users
+--FOR EACH ROW
+--EXECUTE PROCEDURE add_to_passengers();
 
-DROP TRIGGER user_created ON Users;
 
-CREATE TRIGGER user_created
-AFTER INSERT OR UPDATE ON Users
-FOR EACH ROW
-EXECUTE PROCEDURE add_to_passengers();
-
-
-
+--Ensures that Driver cannot accept more passengers than indicated in numpassengers
 CREATE OR REPLACE FUNCTION get_acceptedpassengers(thetid INTEGER)
 RETURNS INTEGER AS $$
 BEGIN
@@ -741,7 +741,7 @@ FOR EACH ROW
 EXECUTE PROCEDURE bid_accept();
 
 
-
+-- ENSURE THAT DRIVER DOES NOT ENTER NUMPASSENGERS > SEATS IN CAR
 CREATE OR REPLACE FUNCTION get_numseats(thecid INTEGER)
 RETURNS INTEGER AS $$
 BEGIN
@@ -767,20 +767,6 @@ BEFORE INSERT ON Trips
 FOR EACH ROW
 EXECUTE PROCEDURE add_new_trip();
 
---CREATE OR REPLACE FUNCTION update_creates()
---RETURNS TRIGGER AS $$
---BEGIN
---  IF TG_OP = 'INSERT' THEN
---      INSERT INTO Creates (uid, tid) VALUES (NEW.uid, 80);
---      RETURN NULL;
---  END IF;
---  RETURN NULL;
---END; $$ LANGUAGE plpgsql;
---
---CREATE TRIGGER new_trip_created
---AFTER INSERT ON Trips
---FOR EACH ROW
---EXECUTE PROCEDURE update_creates();
 
 
 
