@@ -1,61 +1,59 @@
 var express = require('express');
 var router = express.Router();
 
-const { Pool } = require('pg') // postgres database package
+const { Pool } = require('pg');
 
 const pool = new Pool({
-	connectionString: process.env.DATABASE_URL
+    connectionString: process.env.DATABASE_URL
 });
 
+//To Check if User is Logged in, Else redirect to login page
 function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
 }
 
+sql_query = "SELECT * FROM Owns o INNER JOIN Cars c using (cid) INNER JOIN Carspecs using (cid) WHERE (o.uid = "
 // GET
 router.get('/', isLoggedIn, function(req, res, next) {
-	res.render('driver', {
-		title: 'Sign up as driver',
-		user : req.user
+	pool.query(sql_query + req.user.uid + ");", (err, data) => {
+		if (err) {
+			next(err);
+		}
+		else{
+			res.render('driver', {
+				title: 'Add a car to sign up as a driver',
+				user : req.user,
+				data: data.rows
+			});
+		}
 	});
 });
 
 // POST (happens upon submit)
 router.post('/', function(req, res, next) {
 	// Retrieve Information
-	var carModel = req.body.car-model;
-	var numSeats = req.body.num-seats;
-	var carDescription = req.body.car-description;
-	var carPlate = req.body.car-plate;
+	var carModel = req.body.carModel;
+	var numSeats = req.body.numSeats;
+	var carDescription = req.body.carDescription;
+	var carPlate = req.body.carPlate;
 
-	/* SQL Query */
-	// var currCarID = "INSERT into Cars(dummy) VALUES('NULL') RETURNING cid";
-	// var sql_insert_carspecs = "INSERT into Carspecs (currCarID, numSeats, carModel, carDescription, carPlate) VALUES";
+    // Construct Specific SQL Query
+    var insert_newCar = "DO $$ DECLARE newCid integer; BEGIN " + "INSERT into Cars (carplate) VALUES ('" + carPlate + "') RETURNING cid INTO newCid;"
+    + "INSERT INTO Carspecs (cid, seats, model, description) values (newCid, " + numSeats + ",'" + carModel + "','" + carDescription + "');" +
+    " INSERT INTO Drivers (uid) VALUES (" + req.user.uid + ") ON CONFLICT DO NOTHING; INSERT INTO Owns (uid,cid) VALUES (" + req.user.uid + ",newCid); END $$;";
+    //var insert_newCar = "SELECT * from Cars;";
 
-	var sql_insert_first = 'with first_insert as (' +
-						'INSERT into Cars(carPlate)' +
-						'VALUES ';
-	var sql_insert_second = 'RETURNING cid ' +
-							'),' +
-							'second_insert as (' +
-								'INSERT into Carspecs(cid, numSeats, carModel, carDescription)' +
-								'VALUES (SELECT cid from first_insert, '
-
-	// Construct Specific SQL Query
-	var insert_query = sql_insert + "('" + currCarID + "','" + numSeats + "','" + carModel + "','" + carDescription + "','" + carPlate + "');";
-
-	var insert_query = sql_insert_first + "('" + carPlate + "')" + sql_insert_second + "('" + numSeats + "','" + carModel + "','" + carDescription + "','" + carPlate + "');";
-
-	pool.query(insert_query, (err, data) => {
-    if (err) {
-      next(err);
-    }
-    else {
-      res.redirect('/select')
-    }
-	});
+	pool.query(insert_newCar, (err, data) => {
+        if (err) {
+            next(err);
+        }
+        else {
+            res.redirect('/select')
+        }
+    });
 });
 
 module.exports = router;
