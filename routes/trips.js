@@ -29,6 +29,7 @@ function isLoggedIn(req, res, next) {
 var sql_query = 'SELECT * FROM Trips';
 router.get('/', isLoggedIn, function(req, res, next) {
 	pool.query(sql_query, (err, data) => {
+	    console.log(router.stack);
 		if (err) {
 			next(err);
 		}
