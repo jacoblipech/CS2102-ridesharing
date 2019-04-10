@@ -696,10 +696,14 @@ BEGIN
   RETURN NULL;
 END; $$ LANGUAGE plpgsql;
 
+DROP TRIGGER user_created ON Users;
+
 CREATE TRIGGER user_created
 AFTER INSERT OR UPDATE ON Users
 FOR EACH ROW
 EXECUTE PROCEDURE add_to_passengers();
+
+
 
 CREATE OR REPLACE FUNCTION get_acceptedpassengers(thetid INTEGER)
 RETURNS INTEGER AS $$
@@ -712,8 +716,6 @@ RETURNS INTEGER AS $$
 BEGIN
     RETURN (SELECT numpassengers FROM Trips where Trips.tid = thetid);
 END; $$ LANGUAGE plpgsql;
-
-
 
 CREATE OR REPLACE FUNCTION bid_accept()
 RETURNS TRIGGER AS $$
@@ -731,10 +733,54 @@ BEGIN
   END IF;
 END; $$ LANGUAGE plpgsql;
 
+DROP TRIGGER bid_accepted on Bids;
+
 CREATE TRIGGER bid_accepted
 BEFORE UPDATE ON Bids
 FOR EACH ROW
 EXECUTE PROCEDURE bid_accept();
+
+
+
+CREATE OR REPLACE FUNCTION get_numseats(thecid INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN (SELECT seats FROM Carspecs where Carspecs.cid = thecid);
+END; $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION add_new_trip()
+RETURNS TRIGGER AS $$
+DECLARE num_seats INTEGER;
+BEGIN
+  num_seats := get_numseats(NEW.cid);
+  IF TG_OP = 'INSERT' AND (NEW.numpassengers <= num_seats) THEN
+      RETURN NEW;
+  ELSE
+      RETURN NULL;
+  END IF;
+END; $$ LANGUAGE plpgsql;
+
+DROP TRIGGER new_trip on Trips;
+
+CREATE TRIGGER new_trip
+BEFORE INSERT ON Trips
+FOR EACH ROW
+EXECUTE PROCEDURE add_new_trip();
+
+--CREATE OR REPLACE FUNCTION update_creates()
+--RETURNS TRIGGER AS $$
+--BEGIN
+--  IF TG_OP = 'INSERT' THEN
+--      INSERT INTO Creates (uid, tid) VALUES (NEW.uid, 80);
+--      RETURN NULL;
+--  END IF;
+--  RETURN NULL;
+--END; $$ LANGUAGE plpgsql;
+--
+--CREATE TRIGGER new_trip_created
+--AFTER INSERT ON Trips
+--FOR EACH ROW
+--EXECUTE PROCEDURE update_creates();
 
 
 
