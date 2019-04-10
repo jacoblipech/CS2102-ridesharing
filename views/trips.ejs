@@ -26,7 +26,13 @@
             <td><%= data[i].starttime%></td>
             <td><%= data[i].minbid%></td>
             <td><%= data[i].numpassengers%></td>
-            <td><form id="bid_form<%= i %>" action="trips" role="form" method="post"><input type="text" class="form-control" id="bid" name="bidamount" placeholder="0.00"><input type="hidden" id="hiddenBid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="bidsubmit" value="Bid"></form></td>
+            <td>
+              <form id="bid_form<%= i %>" action="trips" role="form" method="post">
+                <input type="text" class="form-control" id="bid" name="bidamount" placeholder="0.00">
+                <input type="hidden" id="hiddenBid" name="tidHidden" value="<%= data[i].tid%>">
+                <input type="submit" name="bidsubmit" value="Bid">
+              </form>
+            </td>
           </tr>
         <% } %>
       </tbody>
