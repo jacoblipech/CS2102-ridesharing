@@ -140,7 +140,7 @@ insert into Users (name, email, password, phonenum) values ('Everett Gorick', 'e
 insert into Users (name, email, password, phonenum) values ('Hildagarde Maidens', 'hmaidensn@sogou.com', '71gMQuU0jbv', 94653637);
 insert into Users (name, email, password, phonenum) values ('Ole Daskiewicz', 'odaskiewiczo@posterous.com', 'jfnVRrxd0ZUz', 99487150);
 insert into Users (name, email, password, phonenum) values ('Eolande Camoys', 'ecamoysp@livejournal.com', '1FNV7Hm8s', 90600491);
-insert into Users (name, email, password, phonenum) values ('Candide Berryann', 'cberryannq@wordpress.org', 'g0rmSPIS60', 93451244);
+insert into Users (name, email, password, phonenum) values ('The DRIVER', 'b@b', 'b', 93451244);
 insert into Users (name, email, password, phonenum) values ('Brandie Shinner', 'bshinnerr@nature.com', 'TRmrBC8PO0N9', 92389442);
 insert into Users (name, email, password, phonenum) values ('Wynn Golder', 'wgolders@hexun.com', 'g9fYSLrx', 93056961);
 insert into Users (name, email, password, phonenum) values ('Elka Swanbourne', 'eswanbournet@yellowpages.com', 'MaSq4x6', 99679408);
@@ -506,7 +506,7 @@ insert into creates (uid, tid, created) values (26, 35, '2018-03-22 17:53:24');
 insert into creates (uid, tid, created) values (24, 36, '2018-03-22 18:49:32');
 insert into creates (uid, tid, created) values (31, 37, '2018-03-22 15:34:57');
 insert into creates (uid, tid, created) values (35, 38, '2018-03-22 12:18:30');
-insert into creates (uid, tid, created) values (27, 39, '2018-03-22 12:51:34');
+insert into creates (uid, tid, created) values (5, 39, '2018-03-22 12:51:34');
 insert into creates (uid, tid, created) values (35, 40, '2018-03-22 04:54:11');
 insert into creates (uid, tid, created) values (38, 41, '2018-03-22 11:49:50');
 insert into creates (uid, tid, created) values (26, 42, '2018-03-22 01:38:25');
@@ -564,7 +564,7 @@ insert into creates (uid, tid, created) values (28, 93, '2018-03-22 10:53:24');
 insert into creates (uid, tid, created) values (24, 94, '2018-03-22 08:57:54');
 insert into creates (uid, tid, created) values (33, 95, '2018-03-22 03:36:33');
 insert into creates (uid, tid, created) values (37, 96, '2018-03-22 19:39:27');
-insert into creates (uid, tid, created) values (27, 97, '2018-03-22 22:50:09');
+insert into creates (uid, tid, created) values (5, 97, '2018-03-22 22:50:09');
 insert into creates (uid, tid, created) values (34, 98, '2018-03-22 21:47:55');
 insert into creates (uid, tid, created) values (24, 99, '2018-03-22 22:17:55');
 insert into creates (uid, tid, created) values (27, 100, '2018-03-22 08:39:55');
@@ -684,3 +684,4 @@ insert into Promocodes (prid, code, expirydate, discount) values (9, 'rB2vfwhdMJ
 insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea', '2018-03-22 07:02:30', 6);
 
 ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
+

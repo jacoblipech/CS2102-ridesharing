@@ -13,9 +13,9 @@
           <th scope="col">Pickup location</th>
           <th scope="col">Drop off location</th>
           <th scope="col">Pickup time</th>
-          <th scope="col">Minimum bid</th>
-          <th scope="col">Seats available</th>
-          <th scope="col">Bid</th>
+          <th scope="col">Bid amount</th>
+          <th scope="col">Bidder</th>
+          <th scope="col">Accept?</th>
         </tr>
       </thead>
       <tbody>
@@ -24,9 +24,13 @@
             <td><%= data[i].origin%></td>
             <td><%= data[i].destination%></td>
             <td><%= data[i].starttime%></td>
-            <td><%= data[i].minbid%></td>
-            <td><%= data[i].numpassengers%></td>
-            <td><form id="bid_form<%= i %>" action="trips" role="form" method="post"><input type="text" class="form-control" id="bid" name="bidamount" placeholder="0.00"><input type="hidden" id="hiddenBid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="bidsubmit" value="Bid"></form></td>
+            <td><%= data[i].amount%></td>
+            <td><%= data[i].bidder%></td>
+            <% if (data[i].isconfirmed == false){ %>
+                <td><form id="bid_form<%= i %>" action="seebids" role="form" method="post"><input type="hidden" id="hiddenTid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="bidaccept" value="Accept"></form></td>
+            <% } else { %>
+                <td>Accepted</td>
+            <% } %>
           </tr>
         <% } %>
       </tbody>
