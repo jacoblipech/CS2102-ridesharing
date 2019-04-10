@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include partial/head.ejs %>
+  </head>
+  <body>
+    <%- include('partial/nav', {title: title, user: user}); %>
+    <h1>View bids on my trips</h1>
+    <p>Here are the bids </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Pickup location</th>
+          <th scope="col">Drop off location</th>
+          <th scope="col">Pickup time</th>
+          <th scope="col">Bid amount</th>
+          <th scope="col">Bidder</th>
+          <th scope="col">Accept?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<data.length; i++) { %>
+          <tr>
+            <td><%= data[i].origin%></td>
+            <td><%= data[i].destination%></td>
+            <td><%= data[i].starttime%></td>
+            <td><%= data[i].amount%></td>
+            <td><%= data[i].bidder%></td>
+            <% if (data[i].isconfirmed == false){ %>
+                <td><form id="bid_form<%= i %>" action="seebids" role="form" method="post"><input type="hidden" id="hiddenTid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="bidaccept" value="Accept"></form></td>
+            <% } else { %>
+                <td>Accepted</td>
+            <% } %>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </body>
+  <footer>
+    <%- include partial/scripts.ejs %>
+    <script src="/javascripts/userValidationScript.js"></script>
+    <script>
+      // function to prevent page from doing anything if not filled to standard
+      (function() {
+        window.addEventListener('load', function() {
+          // form is located by id and validation calls the form
+          var forms = [document.getElementById('user_form')];
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            // upon submit, "check" function is called in userValidationScript.js
+            form.addEventListener('submit', check, true);
+          });
+        }, false);
+      })();
+    </script>
+  </footer>
+</html>
