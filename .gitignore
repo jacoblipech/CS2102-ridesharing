@@ -59,9 +59,9 @@ typings/
 
 # next.js build output
 .next
-
-# IntelliJ
-/.idea/
-*.iml
-/out/
-/.stylelintrc.yml
+.idea/CS2102-ridesharing.iml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml

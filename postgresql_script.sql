@@ -47,7 +47,7 @@ CREATE TABLE Profile (
 
 CREATE TABLE Cars (
 	cid SERIAL PRIMARY KEY,
-	dummy INTEGER DEFAULT NULL
+    carplate VARCHAR(8) UNIQUE
 );
 
 CREATE TABLE Owns (
@@ -76,7 +76,7 @@ CREATE TABLE Trips (
     starttime TIMESTAMP NOT NULL,
     cid INTEGER NOT NULL,
     numpassengers INTEGER,
-    iscomplete BOOLEAN,
+    iscomplete BOOLEAN DEFAULT FALSE,
     FOREIGN KEY(cid) REFERENCES Cars ON DELETE CASCADE
 );
 
@@ -303,26 +303,26 @@ insert into Profile (uid, picurl, rating) values (39, '4JqMZxt3UAn', 1.7);
 insert into Profile (uid, picurl, rating) values (40, 'BSmaG8OMxenk', 3.7);
 
 
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
-insert into Cars (dummy) values (DEFAULT);
+insert into Cars (carplate) values ('SDB0000A');
+insert into Cars (carplate) values ('SDB0001A');
+insert into Cars (carplate) values ('SDB0002A');
+insert into Cars (carplate) values ('SDB0003A');
+insert into Cars (carplate) values ('SDB0004A');
+insert into Cars (carplate) values ('SDB0005A');
+insert into Cars (carplate) values ('SDB0006A');
+insert into Cars (carplate) values ('SDB0007A');
+insert into Cars (carplate) values ('SDB0008A');
+insert into Cars (carplate) values ('SDB0009A');
+insert into Cars (carplate) values ('SDB0010A');
+insert into Cars (carplate) values ('SDB0011A');
+insert into Cars (carplate) values ('SDB0012A');
+insert into Cars (carplate) values ('SDB0013A');
+insert into Cars (carplate) values ('SDB0014A');
+insert into Cars (carplate) values ('SDB0015A');
+insert into Cars (carplate) values ('SDB0016A');
+insert into Cars (carplate) values ('SDB0017A');
+insert into Cars (carplate) values ('SDB0018A');
+insert into Cars (carplate) values ('SDB0019A');
 
 
 insert into Owns (uid, cid) values (5, 1);
@@ -682,3 +682,5 @@ insert into Promocodes (prid, code, expirydate, discount) values (7, 'o3VNqY0U',
 insert into Promocodes (prid, code, expirydate, discount) values (8, '78wxzoK', '2018-03-22 17:23:40', 70);
 insert into Promocodes (prid, code, expirydate, discount) values (9, 'rB2vfwhdMJJ', '2018-03-22 13:17:20', 66);
 insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea', '2018-03-22 07:02:30', 6);
+
+ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
