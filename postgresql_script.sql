@@ -76,6 +76,7 @@ CREATE TABLE Trips (
     starttime TIMESTAMP NOT NULL,
     cid INTEGER NOT NULL,
     numpassengers INTEGER,
+    acceptedpassengers INTEGER DEFAULT 0,
     iscomplete BOOLEAN DEFAULT FALSE,
     FOREIGN KEY(cid) REFERENCES Cars ON DELETE CASCADE
 );
@@ -699,6 +700,41 @@ CREATE TRIGGER user_created
 AFTER INSERT OR UPDATE ON Users
 FOR EACH ROW
 EXECUTE PROCEDURE add_to_passengers();
+
+CREATE OR REPLACE FUNCTION get_acceptedpassengers(thetid INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN (SELECT acceptedpassengers FROM Trips where Trips.tid = thetid);
+END; $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_numpassengers(thetid INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN (SELECT numpassengers FROM Trips where Trips.tid = thetid);
+END; $$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION bid_accept()
+RETURNS TRIGGER AS $$
+DECLARE num_current INTEGER; num_max INTEGER;
+BEGIN
+  num_current := get_acceptedpassengers(NEW.tid);
+  num_max := get_numpassengers(NEW.tid);
+  IF TG_OP = 'UPDATE' AND OLD.isconfirmed <> NEW.isconfirmed AND (num_current + 1 <= num_max) THEN
+      UPDATE Trips
+      SET acceptedpassengers = (num_current + 1)
+      WHERE Trips.tid = NEW.tid;
+      RETURN NEW;
+  ELSE
+      RETURN NULL;
+  END IF;
+END; $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER bid_accepted
+BEFORE UPDATE ON Bids
+FOR EACH ROW
+EXECUTE PROCEDURE bid_accept();
 
 
 
