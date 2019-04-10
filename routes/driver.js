@@ -54,7 +54,7 @@ router.post('/', function(req, res, next) {
             next(err);
         }
         else {
-            res.redirect('/select')
+            res.redirect('/driver')
         }
     });
 });

@@ -48,7 +48,7 @@ router.post('/', function(req, res, next) {
 	var userId = req.user.uid;
 
 	// Construct Specific SQL Query
-	var update_query = "UPDATE Bids SET isconfirmed = TRUE WHERE (tid = " + tid + ");";
+	var update_query = "UPDATE Bids SET isconfirmed = TRUE WHERE (uid = " + userID + " AND tid = " + tid + ");";
 	//var update_query = "SELECT * from Trips";
 	pool.query(update_query, (err, data) => {
     if (err) {
