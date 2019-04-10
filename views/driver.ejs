@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<%- include partial/head.ejs %>
+  </head>
+  <body>
+    <%- include('partial/nav', {title: title, user: user}); %>
+    <h1>Ride Sharing: <%= title %></h1>
+    <form id="addCarForm" action="/driver" role="form" method="post">
+      <div class="form-group">
+        <label for>Car model: </label>
+        <input type="text" class="form-control" id="carModel" name="carModel">
+      </div>
+      <div class="form-group">
+        <label for>Car plate: </label>
+        <input type="text" class="form-control" id="carPlate" name="carPlate">
+      </div>
+      <div class="form-group">
+        <label for>Number of seats</label>
+        <input type="number" class="form-control" id="numSeats" name="numSeats">
+      </div>
+      <div class="form-group">
+        <label for>Car description</label>
+        <input type="text" class="form-control" id="carDescription" name="carDescription">
+      </div>
+      <button type="submit" class="btn btn-warning btn-lg">Submit</button>
+    </form>
+    <h2>Cars registered under your account (You cannot create trips if you have no car)</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Carplate</th>
+                    <th scope="col">Number of Seats</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i<data.length; i++) { %>
+                <tr>
+                    <td><%= data[i].carplate%></td>
+                    <td><%= data[i].seats%></td>
+                    <td><%= data[i].model%></td>
+                    <td><%= data[i].description%></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+  </body>
+  <footer>
+    <%- include partial/scripts.ejs %>
+    <script src="/javascripts/tripValidationScript.js"></script>
+    <script>
+        // function to prevent page from doing anything if not filled to standard
+        (function() {
+            window.addEventListener('load', function() {
+                // form is located by id and validation calls the form
+                var forms = [document.getElementById('createTrip_form')];
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    // upon submit, "check" function is called in userValidationScript.js
+                    form.addEventListener('submit', check, true);
+                });
+            }, false);
+        })();
+    </script>
+  </footer>
+
+</html>

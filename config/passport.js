@@ -50,14 +50,18 @@ passport.use('local-signup', new LocalStrategy({
 			password : password,
 			phonenum : phonenum
 		};
-		var insert_query = sql_insert + "('" + name + "','" + email + "','" + password + "'," + phonenum + ");";
+		var insert_query = sql_insert + "('" + name + "','" + email + "','" + password + "'," + phonenum + "); ON CONFLICT DO NOTHING";
     // if there is no user with that email, create the user
-		pool.query(insert_query, (err, data) => {
-	    if (err) {
-	      return done(err);
-	    }
-			return done(null, user);
-		});
+
+            pool.query(insert_query, (err, data) => {
+            if (err) {
+                if (err.code == 23505){
+                    console.log("HELLO");
+                }
+                return done(err);
+            }
+                return done(null, user);
+            });
 	}
 ));
 
