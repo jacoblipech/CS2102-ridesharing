@@ -34,10 +34,12 @@ var createTripRouter = require('./routes/createTrip');
 /* --- V7: Bidding System --- */
 var tripsRouter = require('./routes/trips');
 var bidsRouter = require('./routes/bids');
+var seeBidsRouter = require('./routes/seebids');
 /* ---------------------------- */
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 var driverRouter = require('./routes/driver');
+var carexistsRouter = require('./routes/carplateexists');
 /* ---------------------------- */
 
 /* --- Adding passport for user authentication --- */
@@ -89,6 +91,7 @@ app.use('/createTrip', createTripRouter);
 /* --- V7: Adding Trips     --- */
 app.use('/trips', tripsRouter);
 app.use('/bids', bidsRouter);
+app.use('/seebids', seeBidsRouter);
 
 /* --- V6: Modify Database  --- */
 app.use(bodyParser.json());
@@ -97,6 +100,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 app.use('/driver', driverRouter);
+app.use('/carplateexists', carexistsRouter)
 /* ---------------------------- */
 
 /* --- Setting up passport  --- */
