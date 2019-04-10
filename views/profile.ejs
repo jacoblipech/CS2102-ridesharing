@@ -4,24 +4,40 @@
 		<%- include partial/head.ejs %>
   </head>
   <body>
-    <%- include('partial/nav', {title: 'title'}); %>
+    <%- include('partial/nav', {title: 'title', user: user}); %>
     <div class="container">
       <div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <br>
       </div>
       <div class="row">
         <div class="col-sm-6">
-          <div class="well">
-            <h3><span class="fa fa-user"></span> Local</h3>
-            <p>
-              <strong>name</strong>: <%= user.name %><br>
-              <strong>email</strong>: <%= user.email %><br>
-              <strong>password</strong>: <%= user.password %>
-            </p>
+          <h2><span class="fa fa-user"></span>Welcome <%= user.name %></h2>
+          <br>
+          <h3>Sign up as</h3>
+          <br>
+          <div class="btn-toolbar align-items-center">
+            <div style="margin-right: 30px">
+              <a href="/driver" class="btn btn-primary">Driver</a>
+            </div>
+            <h4><strong>Or</strong></h4>
+            <div style="margin-left: 30px">
+              <a href="/passenger" class="btn btn-primary">Passenger</a>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="col-sm-6">
+          <h3> Your user details are as follows: </h3>
+          <div style="font-size:22px;">
+            <strong>name</strong>: <%= user.name %><br>
+            <strong>email</strong>: <%= user.email %><br>
+            <strong>password</strong>: <%= user.password %>
           </div>
         </div>
       </div>
-      <a href="/login" class="btn btn-primary btn-sm">Logout</a>
+      <br>
+      <a style="text-align:right;" href="/login" class="btn btn-danger btn-lg">Logout</a>
     </div>
   </body>
 </html>
