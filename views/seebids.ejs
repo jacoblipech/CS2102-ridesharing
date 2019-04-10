@@ -27,7 +27,7 @@
             <td><%= data[i].amount%></td>
             <td><%= data[i].bidder%></td>
             <% if (data[i].isconfirmed == false){ %>
-                <td><form id="bid_form<%= i %>" action="seebids" role="form" method="post"><input type="hidden" id="hiddenTid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="bidaccept" value="Accept"></form></td>
+                <td><form id="bid_form<%= i %>" action="seebids" role="form" method="post"><input type="hidden" id="hiddenTid" name="tidHidden" value="<%= data[i].tid%>"><input type="hidden" id="hiddenuid" name="uidHidden" value="<%= data[i].uid%>"><input type="submit" name="bidaccept" value="Accept"></form></td>
             <% } else { %>
                 <td>Accepted</td>
             <% } %>

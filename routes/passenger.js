@@ -15,10 +15,12 @@ function isLoggedIn(req, res, next) {
     res.redirect('/login');
 }
 
-sql_query = "INSERT INTO Passengers (uid) VALUES ("
+sql_dummy = "SELECT * FROM Passengers;"
+//sql_query = "INSERT INTO Passengers (uid) VALUES ("
 // GET
 router.get('/', isLoggedIn, function(req, res, next) {
-	pool.query(sql_query + req.user.uid + ") ON CONFLICT DO NOTHING;", (err, data) => {
+	pool.query(sql_dummy, (err, data) => {
+	//pool.query(sql_query + req.user.uid + ") ON CONFLICT DO NOTHING;", (err, data) => {
 		if (err) {
 			next(err);
 		}
@@ -29,6 +31,20 @@ router.get('/', isLoggedIn, function(req, res, next) {
 			});
 		}
 	});
+});
+
+// POST (happens upon submit)
+router.post('/', function(req, res, next) {
+	// Retrieve Information
+    var sql_insert = "INSERT INTO Passengers (uid) VALUES (";
+	pool.query(sql_insert + req.user.uid + ") ON CONFLICT DO NOTHING;", (err, data) => {
+        if (err) {
+            next(err);
+        }
+        else {
+            res.redirect('/profile')
+        }
+    });
 });
 
 
