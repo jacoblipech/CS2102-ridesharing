@@ -50,7 +50,6 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var loginRouter = require('./routes/login');
 var signupRouter = require('./routes/signup');
-var profileRouter = require('./routes/profile');
 
 var bodyParser = require('body-parser');
 var app = express();
@@ -112,7 +111,6 @@ app.use('/carplateexists', carexistsRouter)
 /* --- Setting up passport  --- */
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
-app.use('/profile', profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -7,11 +7,23 @@
     <% if (user) { %>
       <%- include('partial/nav', {title: title, user: user}); %>
       <div class="text-center">
-        <h1>Ride Sharing Starter Guide</h1>
-        <p>Welcome to Ride Sharing Home Page</p>
+        <h1>Ride Sharing</h1>
+        <h2><span class="fa fa-user"></span>Welcome <%= user.name %> to Ride Sharing Sie</h2>
       </div>
-      <h1>You have successfully logged in </h1>
-      <p>Shi Mei will complete this segment
+      <h2>You have successfully logged in as a passenger</h2>
+      <br>
+      <br>
+      <h3> Your user details are as follows: </h3>
+      <div style="font-size:22px;">
+        <strong>name</strong>: <%= user.name %><br>
+        <strong>email</strong>: <%= user.email %><br>
+        <strong>password</strong>: <%= user.password %>
+      </div>
+      <div style="margin-top: 100px;">
+        You can also sign up as a
+        <a href="/driver" class="btn btn-primary btn-sm">Driver</a>
+        here.
+      </div>
     <% } else { %>
       <div class="text-center">
         <h1>Ride Sharing Starter Guide</h1>
@@ -26,6 +38,8 @@
         </div>
       </div>
     <% } %>
+    <br>
+    <a style="text-align:right;" href="/login" class="btn btn-danger">Logout</a>
     <p>By: CS2102 Group 39</p>
   </body>
   <footer>
