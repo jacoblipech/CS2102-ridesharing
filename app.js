@@ -36,6 +36,10 @@ var tripsRouter = require('./routes/trips');
 var bidsRouter = require('./routes/bids');
 /* ---------------------------- */
 
+/* --- V8: Drivers and Passenger Sign up  --- */
+var driverRouter = require('./routes/driver');
+/* ---------------------------- */
+
 /* --- Adding passport for user authentication --- */
 var flash = require('connect-flash');
 var passport = require('passport');
@@ -89,6 +93,10 @@ app.use('/bids', bidsRouter);
 /* --- V6: Modify Database  --- */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+/* ---------------------------- */
+
+/* --- V8: Drivers and Passenger Sign up  --- */
+app.use('/driver', driverRouter);
 /* ---------------------------- */
 
 /* --- Setting up passport  --- */
