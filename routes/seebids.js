@@ -2,16 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 const { Pool } = require('pg') // postgres database package
-/* --- V7: Using Dot Env ---
-// change the password specifically for your own database
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: '********',
-  port: 5432,
-})
-*/
 const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
@@ -24,7 +14,7 @@ function isLoggedIn(req, res, next) {
 }
 
 /* SQL Query */
-var sql_query = 'SELECT origin,destination,starttime,cid,amount,U.name AS bidder, isconfirmed, tid FROM Creates C INNER JOIN Trips T using (tid) INNER JOIN Bids B using (tid) INNER JOIN Users U ON (B.uid = U.uid) WHERE (iscomplete = FALSE AND C.uid = ';
+var sql_query = 'SELECT origin,destination,starttime,cid,amount,U.name AS bidder, isconfirmed, tid, b.uid as uid FROM Creates C INNER JOIN Trips T using (tid) INNER JOIN Bids B using (tid) INNER JOIN Users U ON (B.uid = U.uid) WHERE (iscomplete = FALSE AND C.uid = ';
 router.get('/', isLoggedIn, function(req, res, next) {
 	pool.query(sql_query + req.user.uid + ');', (err, data) => {
 	    console.log(router.stack);
@@ -45,10 +35,10 @@ router.get('/', isLoggedIn, function(req, res, next) {
 router.post('/', function(req, res, next) {
 	// Retrieve Information
 	var tid = req.body.tidHidden;
-	var userId = req.user.uid;
+	var uid = req.body.uidHidden;
 
 	// Construct Specific SQL Query
-	var update_query = "UPDATE Bids SET isconfirmed = TRUE WHERE (tid = " + tid + ");";
+	var update_query = "UPDATE Bids SET isconfirmed = TRUE WHERE (uid = " + uid + " AND tid = " + tid + ");";
 	//var update_query = "SELECT * from Trips";
 	pool.query(update_query, (err, data) => {
     if (err) {

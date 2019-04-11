@@ -2,16 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const { Pool } = require('pg') // postgres database package
-/* --- V7: Using Dot Env ---
-// change the password specifically for your own database
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: '********',
-  port: 5432,
-})
-*/
+
 const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
@@ -26,7 +17,7 @@ function isLoggedIn(req, res, next) {
 /* SQL Query */
 var sql_query = 'SELECT * FROM Trips T INNER JOIN Creates C using (tid) WHERE (uid = ';
 router.get('/', isLoggedIn, function(req, res, next) {
-	pool.query(sql_query + req.user.uid + ');', (err, data) => {
+	pool.query(sql_query + req.user.uid + ') ORDER BY starttime;', (err, data) => {
 	    console.log(router.stack);
 		if (err) {
 			next(err);
