@@ -9,26 +9,23 @@
         <a class="nav-link" href="/about">About</a>
       </li>
       <% if (user.ispassenger || user.isadmin) { %>
-        <li <%if(title=="Driver"){%>class="nav-item active"<%}%> class="nav-item">
-          <a class="nav-link" href="/driver">Driver</a>
-        </li>
         <li <%if(title=="Trips"){%>class="nav-item active"<%}%> class="nav-item">
           <a class="nav-link" href="/trips">Trips</a>
         </li>
-      <% } %>
-      <% if (user.isdriver || user.isadmin) { %>
         <li <%if(title=="Bids"){%>class="nav-item active"<%}%> class="nav-item">
           <a class="nav-link" href="/bids">My Bids</a>
         </li>
+      <% } %>
+      <% if (user.isdriver || user.isadmin) { %>
         <li <%if(title=="Create Trip Form"){%>class="nav-item active"<%}%> class="nav-item">
           <a class="nav-link" href="/createTrip">Create Trip Form</a>
         </li>
         <li <%if(title=="Trips Completion"){%>class="nav-item active"<%}%> class="nav-item">
           <a class="nav-link" href="/tripcomplete">Trips Completion</a>
         </li>
-      <li <%if(title=="SeeBids"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/seebids">Bids on my trips</a>
-      </li>
+        <li <%if(title=="SeeBids"){%>class="nav-item active"<%}%> class="nav-item">
+          <a class="nav-link" href="/seebids">Bids on my trips</a>
+        </li>
       <% } %>
       <% if (user.isadmin) { %>
         <li <%if(title=="Admin Page"){%>class="nav-item active"<%}%> class="nav-item">
