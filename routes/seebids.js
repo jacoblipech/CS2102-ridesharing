@@ -17,7 +17,7 @@ function isLoggedIn(req, res, next) {
 var sql_query = 'SELECT origin,destination,starttime,cid,amount,U.name AS bidder, isconfirmed, b.uid as uid, tid,  numpassengers, acceptedpassengers FROM Creates C INNER JOIN Trips T using (tid) INNER JOIN Bids B using (tid) INNER JOIN Users U ON (B.uid = U.uid) WHERE (iscomplete = FALSE AND C.uid = ';
 router.get('/', isLoggedIn, function(req, res, next) {
 	pool.query(sql_query + req.user.uid + ');', (err, data) => {
-	    console.log(router.stack);
+    console.log(router.stack);
 		if (err) {
 			next(err);
 		}

@@ -12,26 +12,14 @@ var sql_query = 'SELECT p.uid as ispassenger, d.uid as isdriver, a.uid as isadmi
 
 router.get('/', function(req, res, next) {
   if (req.user) {
-    pool.query(sql_query + req.user.uid + ');', (err, data) => {
-      if (err) {
-        next(err)
-      }
-      else {
-        res.render('index', {
-          title: 'Home',
-          user: req.user,
-          isdriver: data.rows[0].isdriver,
-          ispassenger: data.rows[0].ispassenger
-        })
-      }
+    res.render('index', {
+      title: 'Home',
+      user: req.user,
     })
   } else {
     res.render('index', {
       title: 'Home',
-      user: undefined,
-      ispassenger: undefined,
-      isdriver: undefined,
-      isadmin: undefined
+      user: false,
     })
   }
 });

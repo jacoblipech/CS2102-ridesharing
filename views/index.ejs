@@ -4,13 +4,17 @@
 		<%- include partial/head.ejs %>
   </head>
   <body>
-    <% if (ispassenger && isdriver) { %>
+    <% if (user) { %>
       <%- include('partial/nav', {title: title, user: user}); %>
       <div class="text-center">
         <h1>Ride Sharing</h1>
         <h2><span class="fa fa-user"></span>Welcome <%= user.name %> to Ride Sharing Site</h2>
       </div>
-      <h2>You have successfully logged in as a passenger and driver</h2>
+      <h2>You have successfully logged in as
+        <span style="text-decoration: underline;">
+        <%if(user.ispassenger){%> Passenger <%}%><%if(user.isdriver){%> Driver <%}%><%if(user.isadmin){%>Admin<%}%>
+        </span>
+      </h2>
       <br>
       <br>
       <h3> Your user details are as follows: </h3>
@@ -30,10 +34,6 @@
         here.
       </div>
       <br>
-    <% } else if (ispassenger) { %>
-      testing
-    <% } else if (isdriver) { %>
-      testing
     <% } else { %>
       <div class="text-center">
         <h1>Ride Sharing Starter Guide</h1>
