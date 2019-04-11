@@ -32,7 +32,6 @@ var manypsgRouter = require('./routes/toomanypassengers');
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 var driverRouter = require('./routes/driver');
-var passengerRouter = require('./routes/passenger');
 var carexistsRouter = require('./routes/carplateexists');
 /* ---------------------------- */
 
@@ -77,7 +76,7 @@ app.use('/forms', formsRouter);
 
 /* --- V6: Adding Create Trip Form     --- */
 app.use('/createTrip', createTripRouter);
-/* ---------------------------- */
+
 /* --- V7: Adding Trips     --- */
 app.use('/trips', tripsRouter);
 app.use('/bids', bidsRouter);
@@ -88,13 +87,10 @@ app.use('/toomanypassengers', manypsgRouter);
 /* --- V6: Modify Database  --- */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-/* ---------------------------- */
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 app.use('/driver', driverRouter);
-app.use('/passenger', passengerRouter);
 app.use('/carplateexists', carexistsRouter)
-/* ---------------------------- */
 
 /* --- Setting up passport  --- */
 app.use('/login', loginRouter);

@@ -36,6 +36,20 @@ router.get('/', function(req, res, next) {
   }
 });
 
+// POST (happens upon submit)
+router.post('/passenger', function(req, res, next) {
+	// Retrieve Information
+  var sql_insert = "INSERT INTO Passengers (uid) VALUES (";
+	pool.query(sql_insert + req.user.uid + ") ON CONFLICT DO NOTHING;", (err, data) => {
+    if (err) {
+      next(err);
+    }
+    else {
+      res.redirect('/')
+    }
+  });
+});
+
 router.get('/logout', function(req, res){
   req.logout();
   res.redirect('/'); //Can fire before session is destroyed?

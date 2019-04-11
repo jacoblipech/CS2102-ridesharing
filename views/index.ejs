@@ -19,13 +19,17 @@
         <strong>email</strong>: <%= user.email %><br>
         <strong>password</strong>: <%= user.password %>
       </div>
-      <div style="margin-top: 100px;">
+      <div style="margin-top: 100px; font-size:30px">
+        You can register as a passenger here:
+        <form action="/passenger" method="post">
+          <button type="submit" class="btn btn-success btn-lg">Register</button>
+        </form>
+        <br>
         You can also sign up as a
-        <a href="/driver" class="btn btn-primary btn-sm">Driver</a>
+        <a href="/driver" class="btn btn-primary btn-lg">Driver</a>
         here.
       </div>
       <br>
-      <a href="/logout" class="btn btn-danger">Logout</a>
     <% } else if (ispassenger) { %>
       testing
     <% } else if (isdriver) { %>
