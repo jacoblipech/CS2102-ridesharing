@@ -6,6 +6,7 @@
   <body>
     <%- include('partial/nav', {title: title, user: user}); %>
     <h1>Ride Sharing <%= title %> Page</h1>
+    <h4>Your wallet amount: $<%= user.balance %></h4>
     <p>Here are the list of available trips</p>
     <table class="table">
       <thead>
@@ -15,6 +16,7 @@
           <th scope="col">Pickup time</th>
           <th scope="col">Minimum bid</th>
           <th scope="col">Seats available</th>
+          <th scope="col">Promo Code</th>
           <th scope="col">Bid</th>
         </tr>
       </thead>
@@ -26,13 +28,10 @@
             <td><%= data[i].starttime%></td>
             <td><%= data[i].minbid%></td>
             <td><%= data[i].numpassengers%></td>
-            <td>
-              <form id="bid_form<%= i %>" action="trips" role="form" method="post">
-                <input type="text" class="form-control" id="bid" name="bidamount" placeholder="0.00">
-                <input type="hidden" id="hiddenBid" name="tidHidden" value="<%= data[i].tid%>">
-                <input type="submit" name="bidsubmit" value="Bid">
-              </form>
-            </td>
+            <form id="bid_form<%= i %>" action="trips" role="form" method="post">
+            <td><input type="text" class="form-control" id="promo" name="promo" placeholder="Enter Promocode if any">
+            <td><input type="text" class="form-control" id="bid" name="bidamount" placeholder="0.00"><input type="hidden" id="hiddenBid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="bidsubmit" value="Bid"></td>
+            </form>
           </tr>
         <% } %>
       </tbody>

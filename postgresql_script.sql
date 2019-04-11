@@ -19,7 +19,8 @@ CREATE TABLE Users (
 	name VARCHAR(80) NOT NULL,
 	email VARCHAR(80) UNIQUE NOT NULL,
 	password VARCHAR(500) NOT NULL,
-	phonenum INTEGER UNIQUE NOT NULL
+	phonenum INTEGER UNIQUE NOT NULL,
+	balance REAL DEFAULT 0
 );
 
 CREATE TABLE Admin(
@@ -95,7 +96,9 @@ CREATE TABLE Bids (
 	uid INTEGER NOT NULL,
 	tid INTEGER NOT NULL,
 	amount REAL NOT NULL,
+	paidamount REAL DEFAULT 0,
     isconfirmed BOOLEAN DEFAULT FALSE,
+    promoapplied VARCHAR(20) DEFAULT NULL,
     PRIMARY KEY(uid, tid),
 	FOREIGN KEY(uid) REFERENCES Passengers ON DELETE CASCADE,
 	FOREIGN KEY(tid) REFERENCES Trips ON DELETE CASCADE
@@ -105,7 +108,7 @@ CREATE TABLE Promocodes (
 	prid INTEGER PRIMARY KEY,
 	code VARCHAR(20) UNIQUE,
 	expirydate TIMESTAMP NOT NULL,
-	discount INTEGER NOT NULL
+	discount REAL NOT NULL
 );
 
 CREATE TABLE Address(
@@ -673,16 +676,16 @@ insert into Bids (uid, tid, amount, isconfirmed) values (5, 88, 13.19, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (17, 61, 36.51, false);
 
 
-insert into Promocodes (prid, code, expirydate, discount) values (1, 'so00qWeI0r92', '2018-03-22 15:09:15', 91);
-insert into Promocodes (prid, code, expirydate, discount) values (2, 'nvi1XAofavlr', '2018-03-22 22:39:02', 22);
-insert into Promocodes (prid, code, expirydate, discount) values (3, 'XzJA6nZP93v', '2018-03-22 08:11:00', 70);
-insert into Promocodes (prid, code, expirydate, discount) values (4, 'oDYHKBH0j', '2018-03-22 06:16:36', 8);
-insert into Promocodes (prid, code, expirydate, discount) values (5, 'JWM4uJt4hXcr', '2018-03-22 07:25:38', 5);
-insert into Promocodes (prid, code, expirydate, discount) values (6, '64KDg5Hc0kN', '2018-03-22 14:44:02', 23);
-insert into Promocodes (prid, code, expirydate, discount) values (7, 'o3VNqY0U', '2018-03-22 10:49:00', 9);
-insert into Promocodes (prid, code, expirydate, discount) values (8, '78wxzoK', '2018-03-22 17:23:40', 70);
-insert into Promocodes (prid, code, expirydate, discount) values (9, 'rB2vfwhdMJJ', '2018-03-22 13:17:20', 66);
-insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea', '2018-03-22 07:02:30', 6);
+insert into Promocodes (prid, code, expirydate, discount) values (1, 'promo', '2020-03-22 15:09:15', 0.10);
+insert into Promocodes (prid, code, expirydate, discount) values (2, 'nvi1XAofavlr', '2018-03-22 22:39:02', 0.22);
+insert into Promocodes (prid, code, expirydate, discount) values (3, 'XzJA6nZP93v', '2018-03-22 08:11:00', 0.70);
+insert into Promocodes (prid, code, expirydate, discount) values (4, 'oDYHKBH0j', '2018-03-22 06:16:36', 0.8);
+insert into Promocodes (prid, code, expirydate, discount) values (5, 'JWM4uJt4hXcr', '2018-03-22 07:25:38', 0.5);
+insert into Promocodes (prid, code, expirydate, discount) values (6, '64KDg5Hc0kN', '2018-03-22 14:44:02', 0.23);
+insert into Promocodes (prid, code, expirydate, discount) values (7, 'o3VNqY0U', '2018-03-22 10:49:00', 0.9);
+insert into Promocodes (prid, code, expirydate, discount) values (8, '78wxzoK', '2018-03-22 17:23:40', 0.70);
+insert into Promocodes (prid, code, expirydate, discount) values (9, 'rB2vfwhdMJJ', '2018-03-22 13:17:20', 0.66);
+insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea', '2018-03-22 07:02:30', 0.6);
 
 ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 
@@ -729,6 +732,8 @@ BEGIN
       UPDATE Trips
       SET acceptedpassengers = (num_current + 1)
       WHERE Trips.tid = NEW.tid;
+      RETURN NEW;
+  ELSEIF TG_OP = 'UPDATE' AND OLD.amount <> NEW.amount THEN
       RETURN NEW;
   ELSE
       RETURN NULL;
@@ -777,9 +782,43 @@ BEGIN
   END IF;
 END; $$ LANGUAGE plpgsql;
 
-
-
 CREATE TRIGGER new_signup
 BEFORE INSERT ON Users
 FOR EACH ROW
 EXECUTE PROCEDURE user_signup();
+
+
+--Insert into Bid table when bid created
+CREATE OR REPLACE FUNCTION get_discount(promocode VARCHAR)
+RETURNS REAL AS $$
+BEGIN
+    RETURN (SELECT discount FROM Promocodes where Promocodes.code = promocode);
+END; $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION bidmade()
+RETURNS TRIGGER AS $$
+DECLARE discount_amount REAL;
+BEGIN
+  RAISE NOTICE 'bidmade triggered';
+  discount_amount = max(coalesce(get_discount(NEW.promoapplied),0));
+  IF TG_OP = 'INSERT' THEN
+      RAISE NOTICE 'promoapplied = %', NEW.promoapplied;
+      RAISE NOTICE 'Discount amount = %', discount_amount;
+      IF discount_amount = 0 THEN
+          RAISE NOTICE 'Entered If Branch';
+          NEW.paidamount := NEW.amount;
+      ELSE
+          RAISE NOTICE 'Entered Else Branch';
+          NEW.paidamount := NEW.amount * (1 - discount_amount);
+      END IF;
+      RETURN NEW;
+  ELSE
+      RETURN NULL;
+  END IF;
+END; $$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER makebid
+BEFORE INSERT ON Bids
+FOR EACH ROW
+EXECUTE PROCEDURE bidmade();
