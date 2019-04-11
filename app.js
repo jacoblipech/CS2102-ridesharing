@@ -15,21 +15,12 @@ var usersRouter = require('./routes/users');
 
 /* --- V2: Adding Web Pages --- */
 var aboutRouter = require('./routes/about');
-/* ---------------------------- */
-
-/* --- V4: Database Connect --- */
-var selectRouter = require('./routes/select');
-/* ---------------------------- */
 
 /* --- V5: Adding Admin Form to add users --- */
 var formsRouter = require('./routes/forms');
-/* ---------------------------- */
-
-
 
 /* --- V6: Create Trip Form for drivers --- */
 var createTripRouter = require('./routes/createTrip');
-/* ---------------------------- */
 
 /* --- V7: Bidding System --- */
 var tripsRouter = require('./routes/trips');
@@ -80,9 +71,6 @@ app.use('/users', usersRouter);
 
 /* --- V2: Adding Web Pages --- */
 app.use('/about', aboutRouter);
-
-/* --- V4: Database Connect --- */
-app.use('/select', selectRouter);
 
 /* --- V5: Adding Forms     --- */
 app.use('/forms', formsRouter);
