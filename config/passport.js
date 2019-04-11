@@ -9,13 +9,17 @@ const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
+var user_type_query = 'SELECT *, p.uid as ispassenger, d.uid as isdriver, a.uid as isadmin '
+                	+ 'FROM Users U LEFT JOIN Passengers P USING (uid) LEFT JOIN Drivers D USING (uid) LEFT JOIN Admin A USING (uid) '
+                	+ 'WHERE uid = (select uid from users where email = '
+
 passport.use('local-login', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true
 }, function (req, email, password, done) {
     // var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
-    pool.query("SELECT * FROM users WHERE email = '" + email + "'", function(err, data) {
+    pool.query(user_type_query + "'" + email + "');", function(err, data) {
 			if (err) {
 				return done(req.flash('message', err));
 			}
@@ -53,15 +57,15 @@ passport.use('local-signup', new LocalStrategy({
 		var insert_query = sql_insert + "('" + name + "','" + email + "','" + password + "'," + phonenum + ") ON CONFLICT DO NOTHING;";
     // if there is no user with that email, create the user
 
-            pool.query(insert_query, (err, data) => {
-            if (err) {
-                if (err.code == 23505){
-                    console.log("HELLO");
-                }
-                return done(err);
-            }
-                return done(null, user);
-            });
+      pool.query(insert_query, (err, data) => {
+      if (err) {
+          if (err.code == 23505){
+              console.log("HELLO");
+          }
+          return done(err);
+      }
+          return done(null, user);
+      });
 	}
 ));
 
@@ -70,7 +74,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(email, done) {
-	pool.query("SELECT * FROM users WHERE email = '" + email + "';", function (err, data){
+	pool.query(user_type_query + "'" + email + "');", function (err, data){
 		if (err) {
 			return done(err);
 		}

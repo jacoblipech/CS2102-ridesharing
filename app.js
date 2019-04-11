@@ -15,21 +15,12 @@ var usersRouter = require('./routes/users');
 
 /* --- V2: Adding Web Pages --- */
 var aboutRouter = require('./routes/about');
-/* ---------------------------- */
-
-/* --- V4: Database Connect --- */
-var selectRouter = require('./routes/select');
-/* ---------------------------- */
 
 /* --- V5: Adding Admin Form to add users --- */
 var formsRouter = require('./routes/forms');
-/* ---------------------------- */
-
-
 
 /* --- V6: Create Trip Form for drivers --- */
 var createTripRouter = require('./routes/createTrip');
-/* ---------------------------- */
 
 /* --- V7: Bidding System --- */
 var tripsRouter = require('./routes/trips');
@@ -41,7 +32,6 @@ var manypsgRouter = require('./routes/toomanypassengers');
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 var driverRouter = require('./routes/driver');
-var passengerRouter = require('./routes/passenger');
 var carexistsRouter = require('./routes/carplateexists');
 /* ---------------------------- */
 
@@ -81,15 +71,12 @@ app.use('/users', usersRouter);
 /* --- V2: Adding Web Pages --- */
 app.use('/about', aboutRouter);
 
-/* --- V4: Database Connect --- */
-app.use('/select', selectRouter);
-
 /* --- V5: Adding Forms     --- */
 app.use('/forms', formsRouter);
 
 /* --- V6: Adding Create Trip Form     --- */
 app.use('/createTrip', createTripRouter);
-/* ---------------------------- */
+
 /* --- V7: Adding Trips     --- */
 app.use('/trips', tripsRouter);
 app.use('/bids', bidsRouter);
@@ -100,13 +87,10 @@ app.use('/toomanypassengers', manypsgRouter);
 /* --- V6: Modify Database  --- */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-/* ---------------------------- */
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 app.use('/driver', driverRouter);
-app.use('/passenger', passengerRouter);
 app.use('/carplateexists', carexistsRouter)
-/* ---------------------------- */
 
 /* --- Setting up passport  --- */
 app.use('/login', loginRouter);

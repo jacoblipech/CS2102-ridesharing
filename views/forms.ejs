@@ -6,6 +6,7 @@
   <body>
     <%- include('partial/nav', {title: title, user: user}); %>
     <h1>Ride Sharing: <%= title %></h1>
+    <h2>Add users form</h2>
 		<form id="user_form" action="forms" role="form" method="post">
       <div class="form-group">
         <label for="faculty">Name</label>
@@ -26,6 +27,28 @@
 			</div>
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
+    <br>
+    <h2>A list of all users</h2>
+    <table class="table">
+			<thead>
+				<tr>
+					<th scope="col">User Name</th>
+          <th scope="col">User Email</th>
+          <th scope="col">User Password</th>
+					<th scope="col">User Phone Number</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for(var i=0; i<data.length; i++) { %>
+				<tr>
+          <td><%= data[i].name%></td>
+          <td><%= data[i].email%></td>
+					<td><%= data[i].password%></td>
+					<td><%= data[i].phonenum%></td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
   </body>
   <footer>
     <%- include partial/scripts.ejs %>
