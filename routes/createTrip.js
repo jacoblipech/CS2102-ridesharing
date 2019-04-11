@@ -52,20 +52,26 @@ router.post('/', function(req, res, next) {
     var cid = req.body.cid;
 
     // Construct Specific SQL Query
+    //var insert_queryTrip = sql_createTrip + "(" + origin + ", " + destination +  ", " + maxBid + ", " + minBid + ", '" + startTime + "', " + cid + ", " + numpassengers + ");";
+
     var insert_queryTrip = "DO $$ DECLARE newTid integer; BEGIN " + sql_createTrip + "(" + origin + ", " + destination
     + ", " + maxBid + ", " + minBid + ", '" + startTime + "', " + cid + ", " + numpassengers + ") RETURNING tid INTO newTid;"
     + "INSERT INTO Creates VALUES (" + req.user.uid + ", newTid); END $$;";
+
     //var insert_queryTrip = "SELECT * from Trips";
     //Finally Insert into Database
     // console.log(insert_queryTrip);
     pool.query(insert_queryTrip, (err, data) => {
         if (err) {
+            if (err.code == 23502) {
+                res.redirect('/toomanypassengers')
+            }
             next(err);
         }
         else {
             //redirect to /allTrips later
 
-            res.redirect("/select")
+            res.redirect("/trips")
         }
     });
 });

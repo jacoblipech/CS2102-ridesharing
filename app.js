@@ -36,10 +36,12 @@ var tripsRouter = require('./routes/trips');
 var bidsRouter = require('./routes/bids');
 var seeBidsRouter = require('./routes/seebids');
 var tripCompleteRouter = require('./routes/tripcomplete');
+var manypsgRouter = require('./routes/toomanypassengers');
 /* ---------------------------- */
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 var driverRouter = require('./routes/driver');
+var passengerRouter = require('./routes/passenger');
 var carexistsRouter = require('./routes/carplateexists');
 /* ---------------------------- */
 
@@ -48,7 +50,6 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var loginRouter = require('./routes/login');
 var signupRouter = require('./routes/signup');
-var profileRouter = require('./routes/profile');
 
 var bodyParser = require('body-parser');
 var app = express();
@@ -94,6 +95,7 @@ app.use('/trips', tripsRouter);
 app.use('/bids', bidsRouter);
 app.use('/seebids', seeBidsRouter);
 app.use('/tripcomplete', tripCompleteRouter);
+app.use('/toomanypassengers', manypsgRouter);
 
 /* --- V6: Modify Database  --- */
 app.use(bodyParser.json());
@@ -102,13 +104,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 app.use('/driver', driverRouter);
+app.use('/passenger', passengerRouter);
 app.use('/carplateexists', carexistsRouter)
 /* ---------------------------- */
 
 /* --- Setting up passport  --- */
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
-app.use('/profile', profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

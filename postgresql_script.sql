@@ -76,6 +76,7 @@ CREATE TABLE Trips (
     starttime TIMESTAMP NOT NULL,
     cid INTEGER NOT NULL,
     numpassengers INTEGER,
+    acceptedpassengers INTEGER DEFAULT 0,
     iscomplete BOOLEAN DEFAULT FALSE,
     FOREIGN KEY(cid) REFERENCES Cars ON DELETE CASCADE
 );
@@ -684,4 +685,106 @@ insert into Promocodes (prid, code, expirydate, discount) values (9, 'rB2vfwhdMJ
 insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea', '2018-03-22 07:02:30', 6);
 
 ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
+
+--CREATE OR REPLACE FUNCTION add_to_passengers()
+--RETURNS TRIGGER AS $$
+--BEGIN
+--  IF TG_OP = 'INSERT' THEN
+--  INSERT INTO passengers (uid)
+--  VALUES(NEW.uid);
+--  END IF;
+--  RETURN NULL;
+--END; $$ LANGUAGE plpgsql;
+--
+--DROP TRIGGER user_created ON Users;
+--
+--CREATE TRIGGER user_created
+--AFTER INSERT OR UPDATE ON Users
+--FOR EACH ROW
+--EXECUTE PROCEDURE add_to_passengers();
+DROP TRIGGER bid_accepted on Bids;
+DROP TRIGGER new_trip on Trips;
+DROP TRIGGER new_signup on Users;
+
+--Ensures that Driver cannot accept more passengers than indicated in numpassengers
+CREATE OR REPLACE FUNCTION get_acceptedpassengers(thetid INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN (SELECT acceptedpassengers FROM Trips where Trips.tid = thetid);
+END; $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_numpassengers(thetid INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN (SELECT numpassengers FROM Trips where Trips.tid = thetid);
+END; $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION bid_accept()
+RETURNS TRIGGER AS $$
+DECLARE num_current INTEGER; num_max INTEGER;
+BEGIN
+  num_current := get_acceptedpassengers(NEW.tid);
+  num_max := get_numpassengers(NEW.tid);
+  IF TG_OP = 'UPDATE' AND OLD.isconfirmed <> NEW.isconfirmed AND (num_current + 1 <= num_max) THEN
+      UPDATE Trips
+      SET acceptedpassengers = (num_current + 1)
+      WHERE Trips.tid = NEW.tid;
+      RETURN NEW;
+  ELSE
+      RETURN NULL;
+  END IF;
+END; $$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER bid_accepted
+BEFORE UPDATE ON Bids
+FOR EACH ROW
+EXECUTE PROCEDURE bid_accept();
+
+
+-- ENSURE THAT DRIVER DOES NOT ENTER NUMPASSENGERS > SEATS IN CAR
+CREATE OR REPLACE FUNCTION get_numseats(thecid INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN (SELECT seats FROM Carspecs where Carspecs.cid = thecid);
+END; $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION add_new_trip()
+RETURNS TRIGGER AS $$
+DECLARE num_seats INTEGER;
+BEGIN
+  num_seats := get_numseats(NEW.cid);
+  IF TG_OP = 'INSERT' AND (NEW.numpassengers <= num_seats) THEN
+      RETURN NEW;
+  ELSE
+      RETURN NULL;
+  END IF;
+END; $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER new_trip
+BEFORE INSERT ON Trips
+FOR EACH ROW
+EXECUTE PROCEDURE add_new_trip();
+
+--Ensure that no duplicates for email and phone number upon sign up
+CREATE OR REPLACE FUNCTION user_signup()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' AND NOT EXISTS(SELECT 1 FROM Users U WHERE (U.email = NEW.email OR U.phonenum = NEW.phonenum) ) THEN
+      RETURN NEW;
+  ELSE
+      RETURN NULL;
+  END IF;
+END; $$ LANGUAGE plpgsql;
+
+
+
+CREATE TRIGGER new_signup
+BEFORE INSERT ON Users
+FOR EACH ROW
+EXECUTE PROCEDURE user_signup();
+
+
+
+
 

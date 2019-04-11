@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<%- include partial/head.ejs %>
+  </head>
+  <body>
+    <%- include('partial/nav', {title: 'title'}); %>
+    <div class="container">
+      <div class="page-header text-center">
+        <h1>Oops, you indicated more passengers than your car has seats</h1>
+        <a href="/createTrip" class="btn btn-primary btn-sm">Try Again</a>
+      </div>
+    </div>
+  </body>
+</html>

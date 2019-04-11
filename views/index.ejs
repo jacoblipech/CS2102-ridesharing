@@ -4,14 +4,32 @@
 		<%- include partial/head.ejs %>
   </head>
   <body>
-    <% if (user) { %>
+    <% if (ispassenger && isdriver) { %>
       <%- include('partial/nav', {title: title, user: user}); %>
       <div class="text-center">
-        <h1>Ride Sharing Starter Guide</h1>
-        <p>Welcome to Ride Sharing Home Page</p>
+        <h1>Ride Sharing</h1>
+        <h2><span class="fa fa-user"></span>Welcome <%= user.name %> to Ride Sharing Site</h2>
       </div>
-      <h1>You have successfully logged in </h1>
-      <p>Shi Mei will complete this segment
+      <h2>You have successfully logged in as a passenger and driver</h2>
+      <br>
+      <br>
+      <h3> Your user details are as follows: </h3>
+      <div style="font-size:22px;">
+        <strong>name</strong>: <%= user.name %><br>
+        <strong>email</strong>: <%= user.email %><br>
+        <strong>password</strong>: <%= user.password %>
+      </div>
+      <div style="margin-top: 100px;">
+        You can also sign up as a
+        <a href="/driver" class="btn btn-primary btn-sm">Driver</a>
+        here.
+      </div>
+      <br>
+      <a href="/logout" class="btn btn-danger">Logout</a>
+    <% } else if (ispassenger) { %>
+      testing
+    <% } else if (isdriver) { %>
+      testing
     <% } else { %>
       <div class="text-center">
         <h1>Ride Sharing Starter Guide</h1>
