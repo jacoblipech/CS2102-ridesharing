@@ -26,10 +26,12 @@
             <td><%= data[i].starttime%></td>
             <td><%= data[i].amount%></td>
             <td><%= data[i].bidder%></td>
-            <% if (data[i].isconfirmed == false){ %>
+            <% if (data[i].isconfirmed == false && data[i].numpassengers > data[i].acceptedpassengers){ %>
                 <td><form id="bid_form<%= i %>" action="seebids" role="form" method="post"><input type="hidden" id="hiddenTid" name="tidHidden" value="<%= data[i].tid%>"><input type="hidden" id="hiddenuid" name="uidHidden" value="<%= data[i].uid%>"><input type="submit" name="bidaccept" value="Accept"></form></td>
-            <% } else { %>
+            <% } else if (data[i].isconfirmed == true) { %>
                 <td>Accepted</td>
+            <% } else { %>
+                <td>Max Passengers Reached</td>
             <% } %>
           </tr>
         <% } %>

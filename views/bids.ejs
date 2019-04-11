@@ -6,6 +6,7 @@
   <body>
     <%- include('partial/nav', {title: title, user: user}); %>
     <h1>Ride Sharing <%= title %> Page</h1>
+    <h4>Your wallet amount: $<%= user.balance %></h4>
     <p>Here are all the bids you made</p>
     <table class="table">
       <thead>
