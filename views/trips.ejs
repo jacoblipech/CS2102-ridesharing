@@ -29,7 +29,7 @@
             <td><%= data[i].minbid%></td>
             <td><%= data[i].numpassengers%></td>
             <form id="bid_form<%= i %>" action="trips" role="form" method="post">
-            <td><input type="text" class="form-control" id="promo" name="promo" placeholder="Enter Promocode if any">
+            <td><input type="text" class="form-control" id="promo" name="promo" placeholder="Enter Promocode if any" value="">
             <td><input type="text" class="form-control" id="bid" name="bidamount" placeholder="0.00"><input type="hidden" id="hiddenBid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="bidsubmit" value="Bid"></td>
             </form>
           </tr>
