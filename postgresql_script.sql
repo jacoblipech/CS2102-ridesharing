@@ -708,6 +708,8 @@ ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 DROP TRIGGER bid_accepted on Bids;
 DROP TRIGGER new_trip on Trips;
 DROP TRIGGER new_signup on Users;
+DROP TRIGGER makebid on Bids;
+DROP TRIGGER updatebid on Bids;
 
 --Ensures that Driver cannot accept more passengers than indicated in numpassengers
 CREATE OR REPLACE FUNCTION get_acceptedpassengers(thetid INTEGER)
@@ -728,12 +730,10 @@ DECLARE num_current INTEGER; num_max INTEGER;
 BEGIN
   num_current := get_acceptedpassengers(NEW.tid);
   num_max := get_numpassengers(NEW.tid);
-  IF TG_OP = 'UPDATE' AND OLD.isconfirmed <> NEW.isconfirmed AND (num_current + 1 <= num_max) THEN
+  IF TG_OP = 'UPDATE' AND (num_current + 1 <= num_max) THEN
       UPDATE Trips
       SET acceptedpassengers = (num_current + 1)
       WHERE Trips.tid = NEW.tid;
-      RETURN NEW;
-  ELSEIF TG_OP = 'UPDATE' AND OLD.amount <> NEW.amount THEN
       RETURN NEW;
   ELSE
       RETURN NULL;
@@ -744,6 +744,7 @@ END; $$ LANGUAGE plpgsql;
 CREATE TRIGGER bid_accepted
 BEFORE UPDATE ON Bids
 FOR EACH ROW
+WHEN (OLD.isconfirmed <> NEW.isconfirmed)
 EXECUTE PROCEDURE bid_accept();
 
 
@@ -789,6 +790,13 @@ EXECUTE PROCEDURE user_signup();
 
 
 --Insert into Bid table when bid created
+
+CREATE OR REPLACE FUNCTION get_balance(theuid INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN (SELECT balance FROM Users where Users.uid = theuid);
+END; $$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION get_discount(promocode VARCHAR)
 RETURNS REAL AS $$
 BEGIN
@@ -797,19 +805,26 @@ END; $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION bidmade()
 RETURNS TRIGGER AS $$
-DECLARE discount_amount REAL;
+DECLARE discount_amount REAL; userbalance INTEGER; new_amt_paid REAL;
 BEGIN
   RAISE NOTICE 'bidmade triggered';
   discount_amount = max(coalesce(get_discount(NEW.promoapplied),0));
+  userbalance = get_balance(NEW.uid);
+  RAISE NOTICE 'Discount amount = %', discount_amount;
+  new_amt_paid = NEW.amount * (1 - discount_amount);
   IF TG_OP = 'INSERT' THEN
       RAISE NOTICE 'promoapplied = %', NEW.promoapplied;
-      RAISE NOTICE 'Discount amount = %', discount_amount;
+      IF new_amt_paid > userbalance THEN
+          RETURN NULL;
+      END IF;
       IF discount_amount = 0 THEN
           RAISE NOTICE 'Entered If Branch';
           NEW.paidamount := NEW.amount;
+          UPDATE Users SET balance = (balance - NEW.paidamount);
       ELSE
           RAISE NOTICE 'Entered Else Branch';
-          NEW.paidamount := NEW.amount * (1 - discount_amount);
+          NEW.paidamount := new_amt_paid;
+          UPDATE Users SET balance = (balance - new_amt_paid);
       END IF;
       RETURN NEW;
   ELSE
@@ -823,4 +838,37 @@ BEFORE INSERT ON Bids
 FOR EACH ROW
 EXECUTE PROCEDURE bidmade();
 
+CREATE OR REPLACE FUNCTION bid_update()
+RETURNS TRIGGER AS $$
+DECLARE discount_amount REAL; old_amt REAL; new_amt REAL; old_paid REAL; new_paid REAL; uid INTEGER; userbalance REAL;
+BEGIN
+  RAISE NOTICE 'bidupdate triggered';
+  discount_amount = max(coalesce(get_discount(NEW.promoapplied),0));
+  old_amt = OLD.amount; new_amt = NEW.amount; old_paid = OLD.paidamount; new_paid = NEW.amount * (1 - discount_amount); userbalance = get_balance(NEW.uid);
+  IF TG_OP = 'UPDATE' AND (old_amt <> new_amt) THEN
+      RAISE NOTICE 'promoapplied = %', NEW.promoapplied;
+      IF new_paid > userbalance + old_paid  THEN
+          RETURN NULL;
+      END IF;
+      IF discount_amount = 0 THEN
+          RAISE NOTICE 'Entered If Branch';
+          NEW.paidamount := NEW.amount;
+          UPDATE Users SET balance = (balance + old_paid - new_amt);
+      ELSE
+          RAISE NOTICE 'Entered Else Branch';
+          NEW.paidamount := new_paid;
+          UPDATE Users SET balance = (balance + old_paid - new_paid);
+      END IF;
+      RETURN NEW;
+  ELSE
+      RETURN NULL;
+  END IF;
+END; $$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER updatebid
+BEFORE UPDATE ON Bids
+FOR EACH ROW
+WHEN (OLD.amount <> NEW.amount)
+EXECUTE PROCEDURE bid_update();
 
