@@ -17,17 +17,17 @@
       <li <%if(title=="Trips Completion"){%>class="nav-item active"<%}%> class="nav-item">
         <a class="nav-link" href="/tripcomplete">Trips Completion</a>
       </li>
+      <li <%if(title=="Create Trip Form"){%>class="nav-item active"<%}%> class="nav-item">
+        <a class="nav-link" href="/createTrip">Create Trip Form</a>
+      </li>      
       <li <%if(title=="Bids"){%>class="nav-item active"<%}%> class="nav-item">
         <a class="nav-link" href="/bids">My Bids</a>
       </li>
       <li <%if(title=="SeeBids"){%>class="nav-item active"<%}%> class="nav-item">
         <a class="nav-link" href="/seebids">Bids on my trips</a>
       </li>
-      <li <%if(title=="Admin Form"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/forms">Admin Form</a>
-      </li>
-      <li <%if(title=="Create Trip Form"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/createTrip">Create Trip Form</a>
+      <li <%if(title=="Admin Page"){%>class="nav-item active"<%}%> class="nav-item">
+        <a class="nav-link" href="/forms">Admin</a>
       </li>
     </ul>
     <% if (user) { %>
