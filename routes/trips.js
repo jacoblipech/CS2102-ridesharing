@@ -44,15 +44,15 @@ router.post('/', function(req, res, next) {
 
 	// Construct Specific SQL Query
 	var sql_insert = "INSERT into Bids (uid, tid, amount, promoapplied) VALUES";
-	var insert_query = sql_insert + "(" + userId + "," + tid + "," + bidamount + "," + promo + ") ON CONFLICT (uid,tid) DO UPDATE SET amount = " + bidamount + ", SET promocode = " + promo + ";";
+	var insert_query = sql_insert + "(" + userId + "," + tid + "," + bidamount + ",'" + promo + "') ON CONFLICT (uid,tid) DO UPDATE SET amount = " + bidamount + ", promoapplied = '" + promo + "';";
 	//var dummy_query = "SELECT * from Trips";
 	pool.query(insert_query, (err, data) => {
     if (err) {
       next(err);
     }
     else {
-      res.redirect('/mybids')
-      //res.redirect('/' + dummy_query)
+      res.redirect('/bids')
+      //res.redirect('/' + insert_query)
     }
 	});
 });

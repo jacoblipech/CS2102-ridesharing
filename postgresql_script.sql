@@ -575,17 +575,17 @@ insert into creates (uid, tid, created) values (27, 100, '2018-03-22 08:39:55');
 
 
 insert into Bids (uid, tid, amount, isconfirmed) values (20, 43, 28.49, false);
-insert into Bids (uid, tid, amount, isconfirmed) values (5, 12, 13.74, false);
-insert into Bids (uid, tid, amount, isconfirmed) values (5, 38, 29.51, false);
+insert into Bids (uid, tid, amount, isconfirmed) values (8, 12, 13.74, false);
+insert into Bids (uid, tid, amount, isconfirmed) values (9, 38, 29.51, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (17, 39, 27.96, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (17, 22, 40.8, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (17, 56, 22.36, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (7, 36, 51.77, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (15, 34, 13.32, false);
-insert into Bids (uid, tid, amount, isconfirmed) values (5, 6, 29.67, false);
+insert into Bids (uid, tid, amount, isconfirmed) values (15, 6, 29.67, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (20, 37, 18.43, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (10, 35, 43.9, false);
-insert into Bids (uid, tid, amount, isconfirmed) values (5, 37, 59.77, false);
+insert into Bids (uid, tid, amount, isconfirmed) values (19, 37, 59.77, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (11, 85, 27.17, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (11, 17, 30.09, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (14, 19, 19.55, false);
@@ -619,7 +619,7 @@ insert into Bids (uid, tid, amount, isconfirmed) values (12, 41, 46.48, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (18, 72, 23.32, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (13, 74, 15.07, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (11, 46, 57.3, false);
-insert into Bids (uid, tid, amount, isconfirmed) values (5, 81, 35.16, false);
+insert into Bids (uid, tid, amount, isconfirmed) values (10, 81, 35.16, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (10, 36, 34.07, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (11, 44, 45.29, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (20, 91, 15.19, false);
@@ -689,6 +689,8 @@ insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea
 
 ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 
+UPDATE Users SET Balance = 10.00;
+
 --CREATE OR REPLACE FUNCTION add_to_passengers()
 --RETURNS TRIGGER AS $$
 --BEGIN
@@ -708,6 +710,8 @@ ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 DROP TRIGGER bid_accepted on Bids;
 DROP TRIGGER new_trip on Trips;
 DROP TRIGGER new_signup on Users;
+DROP TRIGGER makebid on Bids;
+DROP TRIGGER updatebid on Bids;
 
 --Ensures that Driver cannot accept more passengers than indicated in numpassengers
 CREATE OR REPLACE FUNCTION get_acceptedpassengers(thetid INTEGER)
@@ -726,14 +730,13 @@ CREATE OR REPLACE FUNCTION bid_accept()
 RETURNS TRIGGER AS $$
 DECLARE num_current INTEGER; num_max INTEGER;
 BEGIN
+  RAISE NOTICE 'bid_accept triggered';
   num_current := get_acceptedpassengers(NEW.tid);
   num_max := get_numpassengers(NEW.tid);
-  IF TG_OP = 'UPDATE' AND OLD.isconfirmed <> NEW.isconfirmed AND (num_current + 1 <= num_max) THEN
+  IF TG_OP = 'UPDATE' AND (num_current + 1 <= num_max) THEN
       UPDATE Trips
       SET acceptedpassengers = (num_current + 1)
       WHERE Trips.tid = NEW.tid;
-      RETURN NEW;
-  ELSEIF TG_OP = 'UPDATE' AND OLD.amount <> NEW.amount THEN
       RETURN NEW;
   ELSE
       RETURN NULL;
@@ -744,6 +747,7 @@ END; $$ LANGUAGE plpgsql;
 CREATE TRIGGER bid_accepted
 BEFORE UPDATE ON Bids
 FOR EACH ROW
+WHEN (OLD.isconfirmed <> NEW.isconfirmed)
 EXECUTE PROCEDURE bid_accept();
 
 
@@ -789,6 +793,13 @@ EXECUTE PROCEDURE user_signup();
 
 
 --Insert into Bid table when bid created
+
+CREATE OR REPLACE FUNCTION get_balance(theuid INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN (SELECT balance FROM Users where Users.uid = theuid);
+END; $$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION get_discount(promocode VARCHAR)
 RETURNS REAL AS $$
 BEGIN
@@ -797,20 +808,29 @@ END; $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION bidmade()
 RETURNS TRIGGER AS $$
-DECLARE discount_amount REAL;
+DECLARE discount_amount REAL; userbalance INTEGER; new_amt_paid REAL;
 BEGIN
   RAISE NOTICE 'bidmade triggered';
   discount_amount = max(coalesce(get_discount(NEW.promoapplied),0));
-  IF TG_OP = 'INSERT' THEN
+  userbalance = get_balance(NEW.uid);
+  RAISE NOTICE 'Discount amount = %', discount_amount;
+  new_amt_paid = NEW.amount * (1 - discount_amount);
+  IF TG_OP = 'INSERT' AND NOT EXISTS (SELECT * FROM Bids B WHERE B.uid = NEW.uid AND B.tid = NEW.tid) THEN
       RAISE NOTICE 'promoapplied = %', NEW.promoapplied;
-      RAISE NOTICE 'Discount amount = %', discount_amount;
+      IF new_amt_paid > userbalance THEN
+          RETURN NULL;
+      END IF;
       IF discount_amount = 0 THEN
           RAISE NOTICE 'Entered If Branch';
           NEW.paidamount := NEW.amount;
+          UPDATE Users SET balance = (balance - NEW.paidamount) WHERE Users.uid = NEW.uid;
       ELSE
           RAISE NOTICE 'Entered Else Branch';
-          NEW.paidamount := NEW.amount * (1 - discount_amount);
+          NEW.paidamount := new_amt_paid;
+          UPDATE Users SET balance = (balance - new_amt_paid) WHERE Users.uid = NEW.uid;
       END IF;
+      RETURN NEW;
+  ELSEIF TG_OP = 'INSERT' AND EXISTS (SELECT * FROM Bids B WHERE B.uid = NEW.uid AND B.tid = NEW.tid) THEN
       RETURN NEW;
   ELSE
       RETURN NULL;
@@ -822,3 +842,39 @@ CREATE TRIGGER makebid
 BEFORE INSERT ON Bids
 FOR EACH ROW
 EXECUTE PROCEDURE bidmade();
+
+CREATE OR REPLACE FUNCTION bid_update()
+RETURNS TRIGGER AS $$
+DECLARE discount_amount REAL; old_amt REAL; new_amt REAL; old_paid REAL; new_paid REAL; uid INTEGER; userbalance REAL;
+BEGIN
+  RAISE NOTICE 'bidupdate triggered';
+
+  discount_amount = max(coalesce(get_discount(NEW.promoapplied),0));
+  old_amt = OLD.amount; new_amt = NEW.amount; old_paid = OLD.paidamount; new_paid = NEW.amount * (1 - discount_amount);
+  userbalance = get_balance(NEW.uid);
+  IF TG_OP = 'UPDATE' THEN
+      RAISE NOTICE 'promoapplied = %', NEW.promoapplied;
+      IF new_paid > userbalance + old_paid  THEN
+          RETURN NULL;
+      END IF;
+      IF discount_amount = 0 THEN
+          RAISE NOTICE 'Entered If Branch, balance = %, old_paid = %, new_amt = %',userbalance,old_paid,new_amt;
+          NEW.paidamount := NEW.amount;
+          UPDATE Users SET balance = (balance + old_paid - new_amt)  WHERE Users.uid = NEW.uid;
+      ELSE
+          RAISE NOTICE 'Entered Else Branch';
+          NEW.paidamount := new_paid;
+          UPDATE Users SET balance = (balance + old_paid - new_paid)  WHERE Users.uid = NEW.uid;
+      END IF;
+      RETURN NEW;
+  ELSE
+      RETURN NULL;
+  END IF;
+END; $$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER updatebid
+BEFORE UPDATE ON Bids
+FOR EACH ROW
+WHEN (OLD.isconfirmed = NEW.isconfirmed)
+EXECUTE PROCEDURE bid_update();
