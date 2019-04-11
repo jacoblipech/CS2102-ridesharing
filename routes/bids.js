@@ -26,7 +26,7 @@ function isLoggedIn(req, res, next) {
 /* SQL Query */
 var sql_query = 'SELECT * FROM Trips T JOIN Bids B ON (T.tid = B.tid) WHERE (B.uid = ';
 router.get('/', isLoggedIn, function(req, res, next) {
-	pool.query(sql_query + req.user.uid + ') ORDER BY starttime;', (err, data) => {
+	pool.query(sql_query + req.user.uid +') ORDER BY starttime;', (err, data) => {
 		if (err) {
 			next(err);
 		}

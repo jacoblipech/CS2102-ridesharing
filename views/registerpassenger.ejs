@@ -5,7 +5,10 @@
   </head>
   <body>
     <%- include('partial/nav', {title: title, user: user}); %>
-    <h1>Success! You have been signed up as a passenger and can now view and bid on trips!</h1>
+    <h1>Sign Up as a passenger</h1>
+      <form action="/passenger" method="post">
+        <button type="submit" class="btn btn-success btn-lg">Register</button>
+      </form>
   </body>
   <footer>
     <%- include partial/scripts.ejs %>
