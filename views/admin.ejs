@@ -7,7 +7,7 @@
     <%- include('partial/nav', {title: title, user: user}); %>
     <h1>Ride Sharing: <%= title %></h1>
     <h2>Add users form</h2>
-		<form id="user_form" action="forms" role="form" method="post">
+		<form id="user_form" action="admin" method="post">
       <div class="form-group">
         <label for="faculty">Name</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
@@ -45,6 +45,11 @@
           <td><%= data[i].email%></td>
 					<td><%= data[i].password%></td>
 					<td><%= data[i].phonenum%></td>
+          <td>
+            <form action="deleteuser" method="post">
+              <button type="submit" name="email" value="<%=data[i].email%>" class="btn btn-danger">Delete</button>
+            </form>
+          </td>
 				</tr>
 				<% } %>
 			</tbody>

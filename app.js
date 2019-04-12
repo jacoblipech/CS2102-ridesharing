@@ -18,6 +18,7 @@ var aboutRouter = require('./routes/about');
 
 /* --- V5: Adding Admin Form to add users --- */
 var adminRouter = require('./routes/admin');
+var deleteuserRouter = require('./routes/deleteuser');
 
 /* --- V6: Create Trip Form for drivers --- */
 var createTripRouter = require('./routes/createTrip');
@@ -73,6 +74,7 @@ app.use('/about', aboutRouter);
 
 /* --- V5: Adding Admin     --- */
 app.use('/admin', adminRouter);
+app.use('/deleteuser', deleteuserRouter);
 
 /* --- V6: Adding Create Trip Form     --- */
 app.use('/createTrip', createTripRouter);
