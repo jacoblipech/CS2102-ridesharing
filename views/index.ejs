@@ -10,12 +10,12 @@
         <h1>Ride Sharing</h1>
         <h2><span class="fa fa-user"></span>Welcome <%= user.name %> to Ride Sharing Site</h2>
       </div>
-      <h2>You have successfully logged in as
-        <span style="text-decoration: underline;">
-        <%if(user.ispassenger){%> Passenger <%}%><%if(user.isdriver){%> Driver <%}%><%if(user.isadmin){%>Admin<%}%>
-        </span>
-      </h2>
-      <br>
+      <h3>You have successfully logged in as <h3>
+      <div class="text-center" style="text-decoration: underline; color: maroon;">
+        <%if(user.ispassenger){%>Passenger<%}%>
+        <br><%if(user.isdriver){%>Driver<%}%>
+        <br><%if(user.isadmin){%>Admin<%}%>
+      </div>
       <br>
       <h3> Your user details are as follows: </h3>
       <div style="font-size:22px;">
@@ -23,15 +23,18 @@
           <span class="fa fa-envelope"></span><strong>email</strong>: <%= user.email %><br>
           <span class="fa fa-key"></span><strong>password</strong>: <%= user.password %>
       </div>
-      <div style="margin-top: 100px; font-size:30px">
-        You can register as a passenger here:
-        <form action="/passenger" method="post">
-          <button type="submit" class="btn btn-success btn-lg">Register</button>
-        </form>
+      <div style="margin-top: 80px; font-size:30px">
+        <% if (!user.ispassenger && !user.isadmin) { %>
+          <form action="/passenger" class="form-inline" method="post">
+            You can register as a passenger
+            <button style="margin-left: 10px;" type="submit" class="btn btn-success btn-lg">here</button>
+          </form>
+        <% } %>
         <br>
-        You can also sign up as a
-        <a href="/driver" class="btn btn-primary btn-lg">Driver</a>
-        here.
+        <% if (!user.driver && !user.isadmin) { %>
+          You can sign up as a driver
+          <a style="margin-left: 10px;" href="/driver" class="btn btn-primary btn-lg">here</a>
+        <% } %>
       </div>
       <br>
     <% } else { %>

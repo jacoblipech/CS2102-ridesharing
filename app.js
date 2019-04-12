@@ -14,10 +14,11 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 /* --- V2: Adding Web Pages --- */
-var aboutRouter = require('./routes/about');
+var profileRouter = require('./routes/profile');
 
 /* --- V5: Adding Admin Form to add users --- */
-var formsRouter = require('./routes/forms');
+var adminRouter = require('./routes/admin');
+var deleteuserRouter = require('./routes/deleteuser');
 
 /* --- V6: Create Trip Form for drivers --- */
 var createTripRouter = require('./routes/createTrip');
@@ -32,6 +33,7 @@ var manypsgRouter = require('./routes/toomanypassengers');
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 var driverRouter = require('./routes/driver');
+var topdriversRouter = require('./routes/topdrivers');
 var carexistsRouter = require('./routes/carplateexists');
 /* ---------------------------- */
 
@@ -69,10 +71,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 /* --- V2: Adding Web Pages --- */
-app.use('/about', aboutRouter);
+app.use('/profile', profileRouter);
 
-/* --- V5: Adding Forms     --- */
-app.use('/forms', formsRouter);
+/* --- V5: Adding Admin     --- */
+app.use('/admin', adminRouter);
+app.use('/deleteuser', deleteuserRouter);
+app.use('/topdrivers', topdriversRouter);
 
 /* --- V6: Adding Create Trip Form     --- */
 app.use('/createTrip', createTripRouter);
