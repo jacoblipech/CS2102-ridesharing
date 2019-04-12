@@ -52,7 +52,6 @@ router.post('/', function(req, res, next) {
     }
     else {
       res.redirect('/bids')
-      //res.redirect('/' + insert_query)
     }
 	});
 });

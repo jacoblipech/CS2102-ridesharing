@@ -14,7 +14,13 @@ function isLoggedIn(req, res, next) {
 }
 
 /* SQL Query */
-var sql_query = 'SELECT origin,destination,starttime,cid,amount,U.name AS bidder, isconfirmed, b.uid as uid, tid,  numpassengers, acceptedpassengers FROM Creates C INNER JOIN Trips T using (tid) INNER JOIN Bids B using (tid) INNER JOIN Users U ON (B.uid = U.uid) WHERE (iscomplete = FALSE AND C.uid = ';
+// var sql_query = 
+// 'SELECT origin,destination,starttime,cid,amount,U.name AS bidder, isconfirmed, b.uid as uid, tid,  numpassengers, acceptedpassengers FROM Creates C INNER JOIN Trips T using (tid) INNER JOIN Bids B using (tid) INNER JOIN Users U ON (B.uid = U.uid) WHERE (iscomplete = FALSE AND C.uid = ';
+
+
+var sql_query = "Select origin, destination, starttime, amount, U.name as bidder, isconfirmed, numpassengers, acceptedpassengers from Bids B Inner Join Users U on (B.uid = U.uid) Inner Join Trips T on (T.tid = B.tid) Inner Join Creates C on (C.tid = B.tid) WHERE (iscomplete = FALSE AND C.uid = ";
+
+
 router.get('/', isLoggedIn, function(req, res, next) {
 	pool.query(sql_query + req.user.uid + ');', (err, data) => {
     console.log(router.stack);
@@ -39,7 +45,6 @@ router.post('/', function(req, res, next) {
 
 	// Construct Specific SQL Query
 	var update_query = "UPDATE Bids SET isconfirmed = TRUE WHERE (uid = " + uid + " AND tid = " + tid + ");";
-	//var update_query = "SELECT * from Trips";
 	pool.query(update_query, (err, data) => {
     if (err) {
       next(err);

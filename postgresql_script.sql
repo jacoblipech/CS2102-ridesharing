@@ -572,6 +572,7 @@ insert into creates (uid, tid, created) values (5, 97, '2018-03-22 22:50:09');
 insert into creates (uid, tid, created) values (34, 98, '2018-03-22 21:47:55');
 insert into creates (uid, tid, created) values (24, 99, '2018-03-22 22:17:55');
 insert into creates (uid, tid, created) values (27, 100, '2018-03-22 08:39:55');
+insert into creates (uid, tid, created) values (101, 17, '2018-03-22 08:39:55');
 
 
 insert into Bids (uid, tid, amount, isconfirmed) values (20, 43, 28.49, false);
