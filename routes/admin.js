@@ -23,7 +23,7 @@ router.get('/', isLoggedIn, function(req, res, next) {
 			next(err);
 		}
 		else{
-			res.render('forms', {
+			res.render('admin', {
 				title: 'Admin Page',
 				user : req.user,
 				data: data.rows
