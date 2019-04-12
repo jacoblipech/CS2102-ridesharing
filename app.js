@@ -14,7 +14,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 /* --- V2: Adding Web Pages --- */
-var aboutRouter = require('./routes/about');
+var profileRouter = require('./routes/profile');
 
 /* --- V5: Adding Admin Form to add users --- */
 var adminRouter = require('./routes/admin');
@@ -70,7 +70,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 /* --- V2: Adding Web Pages --- */
-app.use('/about', aboutRouter);
+app.use('/profile', profileRouter);
 
 /* --- V5: Adding Admin     --- */
 app.use('/admin', adminRouter);
