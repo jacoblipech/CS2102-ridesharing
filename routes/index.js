@@ -12,28 +12,30 @@ var sql_query = 'SELECT p.uid as ispassenger, d.uid as isdriver, a.uid as isadmi
 
 router.get('/', function(req, res, next) {
   if (req.user) {
-    pool.query(sql_query + req.user.uid + ');', (err, data) => {
-      if (err) {
-        next(err)
-      }
-      else {
-        res.render('index', {
-          title: 'Home',
-          user: req.user,
-          isdriver: data.rows[0].isdriver,
-          ispassenger: data.rows[0].ispassenger
-        })
-      }
+    res.render('index', {
+      title: 'Home',
+      user: req.user,
     })
   } else {
     res.render('index', {
       title: 'Home',
-      user: undefined,
-      ispassenger: undefined,
-      isdriver: undefined,
-      isadmin: undefined
+      user: false,
     })
   }
+});
+
+// POST (happens upon submit)
+router.post('/passenger', function(req, res, next) {
+	// Retrieve Information
+  var sql_insert = "INSERT INTO Passengers (uid) VALUES (";
+	pool.query(sql_insert + req.user.uid + ") ON CONFLICT DO NOTHING;", (err, data) => {
+    if (err) {
+      next(err);
+    }
+    else {
+      res.redirect('/')
+    }
+  });
 });
 
 router.get('/logout', function(req, res){

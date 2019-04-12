@@ -1,8 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/">Ride Sharing</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li <%if(title=="Home"){%>class="nav-item active"<%}%> class="nav-item">
@@ -11,37 +8,45 @@
       <li <%if(title=="About"){%>class="nav-item active"<%}%> class="nav-item">
         <a class="nav-link" href="/about">About</a>
       </li>
-      <li <%if(title=="Driver"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/driver">Driver</a>
-      </li>
-      <li <%if(title=="Select"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/select">Select Table</a>
-      </li>
-      <li <%if(title=="Trips"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/trips">Trips</a>
-      </li>
-      <li <%if(title=="Trips Completion"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/tripcomplete">Trips Completion</a>
-      </li>
-      <li <%if(title=="Bids"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/bids">My Bids</a>
-      </li>
-      <li <%if(title=="SeeBids"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/seebids">Bids on my trips</a>
-      </li>
-      <li <%if(title=="Admin Form"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/forms">Admin Form</a>
-      </li>
-      <li <%if(title=="Create Trip Form"){%>class="nav-item active"<%}%> class="nav-item">
-        <a class="nav-link" href="/createTrip">Create Trip Form</a>
-      </li>
+      <% if (user.ispassenger || user.isadmin) { %>
+        <li <%if(title=="Trips"){%>class="nav-item active"<%}%> class="nav-item">
+          <a class="nav-link" href="/trips">Trips</a>
+        </li>
+        <li <%if(title=="Bids"){%>class="nav-item active"<%}%> class="nav-item">
+          <a class="nav-link" href="/bids">My Bids</a>
+        </li>
+      <% } %>
+      <% if (user.isdriver || user.isadmin) { %>
+        <li <%if(title=="Create Trip Form"){%>class="nav-item active"<%}%> class="nav-item">
+          <a class="nav-link" href="/createTrip">Create Trip Form</a>
+        </li>
+        <li <%if(title=="Trips Completion"){%>class="nav-item active"<%}%> class="nav-item">
+          <a class="nav-link" href="/tripcomplete">Trips Completion</a>
+        </li>
+        <li <%if(title=="SeeBids"){%>class="nav-item active"<%}%> class="nav-item">
+          <a class="nav-link" href="/seebids">Bids on my trips</a>
+        </li>
+      <% } %>
+      <% if (user.isadmin) { %>
+        <li <%if(title=="Admin Page"){%>class="nav-item active"<%}%> class="nav-item">
+          <a class="nav-link" href="/forms">Admin</a>
+        </li>
+      <% } %>
     </ul>
-    <!-- TODO: Change to a dropdown menu option -->
-    <%= user.name %>
-    <form class="form-inline my-2 my-lg-0">
+    <% if (user) { %>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <span class="navbar-text">Logged in as <%= user.name %>  </span>
+        </li>
+        <li style="margin-left:10px;" class="nav-item">
+          <a href="/logout" class="btn btn-outline-danger">Logout</a>
+        </li>
+      </ul>
+    <% } %>
+    <!-- <form class="form-inline my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+      <button class="btn btn-outline-success my-sm-0" type="submit">Search</button>
+    </form> -->
   </div>
 </nav>
 <br>
