@@ -9,8 +9,8 @@ function isLoggedIn(req, res, next) {
 }
 
 router.get('/', isLoggedIn, function(req, res, next) {
-  res.render('about', {
-    title: 'About',
+  res.render('profile', {
+    title: 'User Profile',
     user : req.user
   });
 });
