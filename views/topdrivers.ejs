@@ -1,40 +1,40 @@
-<div class="modal fade" id="topDriversListModal" tabindex="-1" role="dialog" aria-labelledby="topDriversListLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="topDriversListLabel">List of Top 10 Drivers</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <table class="table modal-body">
-        <thead>
-          <tr>
-            <th scope="col">User Name</th>
-            <th scope="col">User Email</th>
-            <th scope="col">User Password</th>
-            <th scope="col">User Phone Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for(var i=0; i<data.length; i++) { %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include partial/head.ejs %>
+  </head>
+  <body>
+    <%- include('partial/nav', {title: title, user: user}); %>
+    <h1>A list of top drivers with completed trips</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone number</th>
+          <th scope="col">Completed trips</th>
+          <th scope="col">Reward?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<data.length; i++) { %>
           <tr>
             <td><%= data[i].name%></td>
             <td><%= data[i].email%></td>
             <td><%= data[i].phonenum%></td>
+            <td style="text-align: center;"><%= data[i].numtrips %></td>
             <td>
-              <form action="deleteuser" method="post">
-                <button type="submit" name="email" value="<%=data[i].email%>" class="btn btn-danger">Delete</button>
+              <form action="/topdrivers" role="form" method="post">
+                <input type="hidden" name="email" value="<%= data[i].email%>">
+                <input type="submit" name="reward" value="reward">
               </form>
             </td>
           </tr>
-          <% } %>
-        </tbody>
-      </table>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-      </div>
-    </div>
-  </div>
-</div>
+        <% } %>
+      </tbody>
+    </table>
+  </body>
+  <footer>
+    <%- include partial/scripts.ejs %>
+  </footer>
+</html>
