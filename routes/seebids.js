@@ -18,7 +18,7 @@ function isLoggedIn(req, res, next) {
 // 'SELECT origin,destination,starttime,cid,amount,U.name AS bidder, isconfirmed, b.uid as uid, tid,  numpassengers, acceptedpassengers FROM Creates C INNER JOIN Trips T using (tid) INNER JOIN Bids B using (tid) INNER JOIN Users U ON (B.uid = U.uid) WHERE (iscomplete = FALSE AND C.uid = ';
 
 
-var sql_query = "Select origin, destination, starttime, amount, U.name as bidder, isconfirmed, numpassengers, acceptedpassengers from Bids B Inner Join Users U on (B.uid = U.uid) Inner Join Trips T on (T.tid = B.tid) Inner Join Creates C on (C.tid = B.tid) WHERE (iscomplete = FALSE AND C.uid = ";
+var sql_query = "Select origin, destination, starttime, amount, U.name as bidder, isconfirmed, numpassengers, acceptedpassengers, B.uid as uid, T.tid as tid from Bids B Inner Join Users U on (B.uid = U.uid) Inner Join Trips T on (T.tid = B.tid) Inner Join Creates C on (C.tid = B.tid) WHERE (iscomplete = FALSE AND C.uid = ";
 
 
 router.get('/', isLoggedIn, function(req, res, next) {
@@ -45,12 +45,14 @@ router.post('/', function(req, res, next) {
 
 	// Construct Specific SQL Query
 	var update_query = "UPDATE Bids SET isconfirmed = TRUE WHERE (uid = " + uid + " AND tid = " + tid + ");";
+	var dummy_query = "SELECT * FROM Users;"
 	pool.query(update_query, (err, data) => {
     if (err) {
       next(err);
     }
     else {
       res.redirect('/seebids')
+      //res.redirect('/' + update_query)
     }
 	});
 });
