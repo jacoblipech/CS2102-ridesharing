@@ -118,6 +118,7 @@ CREATE TABLE Address(
 );
 
 --100 Users
+insert into Users (name, email, password, phonenum) values ('Eddy Eng', 'eddy@gmail.com', '456', 12345678);
 insert into Users (name, email, password, phonenum) values ('Raynard McDavid', 'rmcdavid0@wikispaces.com', 'cNZ9ElTGt', 93886439);
 insert into Users (name, email, password, phonenum) values ('Melania Extil', 'mextil1@liveinternet.ru', 'KFrwh3XP2WV', 94682037);
 insert into Users (name, email, password, phonenum) values ('Jacquenetta Agiolfinger', 'jagiolfinger2@bloglines.com', 'RrClJKj', 95985431);
@@ -690,7 +691,7 @@ insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea
 
 ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 
-UPDATE Users SET Balance = 10.00;
+UPDATE Users SET Balance = 1000.00;
 
 --CREATE OR REPLACE FUNCTION add_to_passengers()
 --RETURNS TRIGGER AS $$
