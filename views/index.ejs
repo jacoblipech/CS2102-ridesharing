@@ -4,32 +4,39 @@
 		<%- include partial/head.ejs %>
   </head>
   <body>
-    <% if (ispassenger && isdriver) { %>
+    <% if (user) { %>
       <%- include('partial/nav', {title: title, user: user}); %>
       <div class="text-center">
         <h1>Ride Sharing</h1>
         <h2><span class="fa fa-user"></span>Welcome <%= user.name %> to Ride Sharing Site</h2>
       </div>
-      <h2>You have successfully logged in as a passenger and driver</h2>
-      <br>
+      <h3>You have successfully logged in as <h3>
+      <div class="text-center" style="text-decoration: underline; color: maroon;">
+        <%if(user.ispassenger){%>Passenger<%}%>
+        <br><%if(user.isdriver){%>Driver<%}%>
+        <br><%if(user.isadmin){%>Admin<%}%>
+      </div>
       <br>
       <h3> Your user details are as follows: </h3>
-      <div style="font-size:22px;">
+      <div style="font-size:20px;">
         <strong>name</strong>: <%= user.name %><br>
         <strong>email</strong>: <%= user.email %><br>
         <strong>password</strong>: <%= user.password %>
       </div>
-      <div style="margin-top: 100px;">
-        You can also sign up as a
-        <a href="/driver" class="btn btn-primary btn-sm">Driver</a>
-        here.
+      <div style="margin-top: 80px; font-size:30px">
+        <% if (!user.ispassenger && !user.isadmin) { %>
+          <form action="/passenger" class="form-inline" method="post">
+            You can register as a passenger
+            <button style="margin-left: 10px;" type="submit" class="btn btn-success btn-lg">here</button>
+          </form>
+        <% } %>
+        <br>
+        <% if (!user.driver && !user.isadmin) { %>
+          You can sign up as a driver
+          <a style="margin-left: 10px;" href="/driver" class="btn btn-primary btn-lg">here</a>
+        <% } %>
       </div>
       <br>
-      <a href="/logout" class="btn btn-danger">Logout</a>
-    <% } else if (ispassenger) { %>
-      testing
-    <% } else if (isdriver) { %>
-      testing
     <% } else { %>
       <div class="text-center">
         <h1>Ride Sharing Starter Guide</h1>

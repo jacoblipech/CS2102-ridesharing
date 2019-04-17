@@ -14,22 +14,14 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 /* --- V2: Adding Web Pages --- */
-var aboutRouter = require('./routes/about');
-/* ---------------------------- */
-
-/* --- V4: Database Connect --- */
-var selectRouter = require('./routes/select');
-/* ---------------------------- */
+var profileRouter = require('./routes/profile');
 
 /* --- V5: Adding Admin Form to add users --- */
-var formsRouter = require('./routes/forms');
-/* ---------------------------- */
-
-
+var adminRouter = require('./routes/admin');
+var deleteuserRouter = require('./routes/deleteuser');
 
 /* --- V6: Create Trip Form for drivers --- */
 var createTripRouter = require('./routes/createTrip');
-/* ---------------------------- */
 
 /* --- V7: Bidding System --- */
 var tripsRouter = require('./routes/trips');
@@ -41,7 +33,7 @@ var manypsgRouter = require('./routes/toomanypassengers');
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 var driverRouter = require('./routes/driver');
-var passengerRouter = require('./routes/passenger');
+var topdriversRouter = require('./routes/topdrivers');
 var carexistsRouter = require('./routes/carplateexists');
 /* ---------------------------- */
 
@@ -79,17 +71,16 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 /* --- V2: Adding Web Pages --- */
-app.use('/about', aboutRouter);
+app.use('/profile', profileRouter);
 
-/* --- V4: Database Connect --- */
-app.use('/select', selectRouter);
-
-/* --- V5: Adding Forms     --- */
-app.use('/forms', formsRouter);
+/* --- V5: Adding Admin     --- */
+app.use('/admin', adminRouter);
+app.use('/deleteuser', deleteuserRouter);
+app.use('/topdrivers', topdriversRouter);
 
 /* --- V6: Adding Create Trip Form     --- */
 app.use('/createTrip', createTripRouter);
-/* ---------------------------- */
+
 /* --- V7: Adding Trips     --- */
 app.use('/trips', tripsRouter);
 app.use('/bids', bidsRouter);
@@ -100,13 +91,10 @@ app.use('/toomanypassengers', manypsgRouter);
 /* --- V6: Modify Database  --- */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-/* ---------------------------- */
 
 /* --- V8: Drivers and Passenger Sign up  --- */
 app.use('/driver', driverRouter);
-app.use('/passenger', passengerRouter);
 app.use('/carplateexists', carexistsRouter)
-/* ---------------------------- */
 
 /* --- Setting up passport  --- */
 app.use('/login', loginRouter);
