@@ -18,10 +18,10 @@
       </div>
       <br>
       <h3> Your user details are as follows: </h3>
-      <div style="font-size:20px;">
-        <strong>name</strong>: <%= user.name %><br>
-        <strong>email</strong>: <%= user.email %><br>
-        <strong>password</strong>: <%= user.password %>
+      <div style="font-size:22px;">
+          <span class="fa fa-user"></span><strong>name</strong>: <%= user.name %><br>
+          <span class="fa fa-envelope"></span><strong>email</strong>: <%= user.email %><br>
+          <span class="fa fa-key"></span><strong>password</strong>: <%= user.password %>
       </div>
       <div style="margin-top: 80px; font-size:30px">
         <% if (!user.ispassenger && !user.isadmin) { %>
