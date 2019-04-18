@@ -2,6 +2,10 @@
 <html>
   <head>
 		<%- include partial/head.ejs %>
+    <style>
+        p     { font-size: 22px; }
+        span  { padding-right: 15px; }
+    </style>
   </head>
   <body>
     <% if (user) { %>
@@ -10,18 +14,18 @@
         <h1>Ride Sharing</h1>
         <h2><span class="fa fa-user"></span>Welcome <%= user.name %> to Ride Sharing Site</h2>
       </div>
-      <h3>You have successfully logged in as <h3>
-      <div class="text-center" style="text-decoration: underline; color: maroon;">
+      <h3 class="text-center" style="margin-top:30px; color:green;">You have successfully logged in as <h3>
+      <div class="text-center" style="text-decoration: underline; color: maroon; font-size: 32px">
         <%if(user.ispassenger){%>Passenger<%}%>
         <br><%if(user.isdriver){%>Driver<%}%>
         <br><%if(user.isadmin){%>Admin<%}%>
       </div>
       <br>
-      <h3> Your user details are as follows: </h3>
-      <div style="font-size:22px;">
-          <span class="fa fa-user"></span><strong>name</strong>: <%= user.name %><br>
-          <span class="fa fa-envelope"></span><strong>email</strong>: <%= user.email %><br>
-          <span class="fa fa-key"></span><strong>password</strong>: <%= user.password %>
+      <h3 style="margin-left: 150px;"> Your user details are as follows: </h3>
+      <div style="font-size:22px; margin-left: 150px;">
+          <span class="fa fa-user"></span><strong>Name</strong>: <%= user.name %><br>
+          <span class="fa fa-envelope"></span><strong>Email</strong>: <%= user.email %><br>
+          <span class="fa fa-key"></span><strong>Password</strong>: <%= user.password %>
       </div>
       <div style="margin-top: 80px; font-size:30px">
         <% if (!user.ispassenger && !user.isadmin) { %>
@@ -31,7 +35,7 @@
           </form>
         <% } %>
         <br>
-        <% if (!user.driver && !user.isadmin) { %>
+        <% if (!user.isdriver && !user.isadmin) { %>
           You can sign up as a driver
           <a style="margin-left: 10px;" href="/driver" class="btn btn-primary btn-lg">here</a>
         <% } %>

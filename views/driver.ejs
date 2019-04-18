@@ -25,7 +25,11 @@
       </div>
       <button type="submit" class="btn btn-success btn-lg">Submit</button>
     </form>
-    <h2>Cars registered under your account (You cannot create trips if you have no car)</h2>
+    <br>
+    <% if (user.isdriver) { %>
+      <h1 style="color:green;" class="text-center"> Congrats, you have signed up as a driver </h1>
+      <br>
+      <h2>Cars registered under your account (You cannot create trips if you have no car)</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -46,6 +50,7 @@
                 <% } %>
             </tbody>
         </table>
+      <% } %>
   </body>
   <footer>
     <%- include partial/scripts.ejs %>
