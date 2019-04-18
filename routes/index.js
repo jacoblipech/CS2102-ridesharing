@@ -38,6 +38,21 @@ router.post('/passenger', function(req, res, next) {
   });
 });
 
+const add_balance_query = "update users set balance = balance + ";
+router.post('/topup', function(req, res, next) {
+  var email = req.body.email;
+	var topup = req.body.amount;
+	console.log(topup)
+	pool.query(add_balance_query + topup + " where email = '" + email + "';", (err, data) => {
+		if (err) {
+			next(err);
+		}
+		else{
+      res.redirect('/');
+		}
+	});
+});
+
 router.get('/logout', function(req, res){
   req.logout();
   res.redirect('/'); //Can fire before session is destroyed?
