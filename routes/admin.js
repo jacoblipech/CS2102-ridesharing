@@ -62,8 +62,7 @@ router.post('/promocode', function(req, res, next) {
 	var discount = req.body.discount;
 
 	var query = create_promo_query + prid + ", '" + code + "', '" + expirydate + "', " + discount + ");";
-	console.log(query);
-	// Construct Specific SQL Query
+	// console.log(query);
 	pool.query(query, (err, data) => {
     if (err) {
       next(err);
