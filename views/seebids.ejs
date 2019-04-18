@@ -7,13 +7,14 @@
     <%- include('partial/nav', {title: title, user: user}); %>
     <h1>View bids on my trips</h1>
     <p>Here are the bids </p>
-    <table class="table">
+    <table class="table text-center">
       <thead>
         <tr>
-          <th scope="col">Pickup location</th>
-          <th scope="col">Drop off location</th>
-          <th scope="col">Pickup time</th>
-          <th scope="col">Bid amount</th>
+          <th scope="col">Pickup Location</th>
+          <th scope="col">Drop-off Location</th>
+          <th scope="col">Pickup Date</th>
+          <th scope="col">Pickup Time</th>
+          <th scope="col">Bid Amount</th>
           <th scope="col">Bidder</th>
           <th scope="col">Accept?</th>
         </tr>
@@ -23,11 +24,24 @@
           <tr>
             <td><%= data[i].origin%></td>
             <td><%= data[i].destination%></td>
-            <td><%= data[i].starttime%></td>
+            <td>
+              <% var date = (data[i].starttime.toString()).slice(0, 15) %>
+              <%= date %>
+            </td>
+            <td>
+              <% var time = (data[i].starttime.toString()).slice(16, 24) %>
+              <%= time %>
+            </td>
             <td><%= data[i].amount%></td>
             <td><%= data[i].bidder%></td>
             <% if (data[i].isconfirmed == false && data[i].numpassengers > data[i].acceptedpassengers){ %>
-                <td><form id="bid_form<%= i %>" action="seebids" role="form" method="post"><input type="hidden" id="hiddenTid" name="tidHidden" value="<%= data[i].tid%>"><input type="hidden" id="hiddenuid" name="uidHidden" value="<%= data[i].uid%>"><input type="submit" name="bidaccept" value="Accept"></form></td>
+                <td>
+                  <form id="bid_form<%= i %>" action="seebids" role="form" method="post">
+                    <input type="hidden" id="hiddenTid" name="tidHidden" value="<%= data[i].tid%>">
+                    <input type="hidden" id="hiddenuid" name="uidHidden" value="<%= data[i].uid%>">
+                    <input class="btn btn-success" type="submit" name="bidaccept" value="Accept">
+                  </form>
+                </td>
             <% } else if (data[i].isconfirmed == true) { %>
                 <td>Accepted</td>
             <% } else { %>

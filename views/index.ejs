@@ -25,7 +25,9 @@
       <div style="font-size:22px; margin-left: 150px;">
           <span class="fa fa-user"></span><strong>Name</strong>: <%= user.name %><br>
           <span class="fa fa-envelope"></span><strong>Email</strong>: <%= user.email %><br>
-          <span class="fa fa-key"></span><strong>Password</strong>: <%= user.password %>
+          <span class="fa fa-key"></span><strong>Password</strong>: <%= user.password %><br>
+          <span class="fa fa-phone"></span><strong>Phone</strong>: <%= user.phonenum %><br>
+          <span class="fa fa-shield"></span><strong>Balance</strong>: <%= user.balance %>
       </div>
       <div style="margin-top: 80px; font-size:30px">
         <% if (!user.ispassenger && !user.isadmin) { %>

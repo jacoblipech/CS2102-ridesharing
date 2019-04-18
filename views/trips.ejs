@@ -8,12 +8,14 @@
     <h1>Ride Sharing <%= title %> Page</h1>
     <h4>Your wallet amount: $<%= user.balance %></h4>
     <p>Here are the list of available trips</p>
-    <table class="table">
+    <br>
+    <table class="table text-center">
       <thead>
         <tr>
           <th scope="col">Pickup location</th>
           <th scope="col">Drop off location</th>
-          <th scope="col">Pickup time</th>
+          <th scope="col">Pickup Date</th>
+          <th scope="col">Pickup Time</th>
           <th scope="col">Minimum bid</th>
           <th scope="col">Seats available</th>
           <th scope="col">Promo Code</th>
@@ -25,12 +27,24 @@
           <tr>
             <td><%= data[i].origin%></td>
             <td><%= data[i].destination%></td>
-            <td><%= data[i].starttime%></td>
+            <td>
+              <% var date = (data[i].starttime.toString()).slice(0, 15) %>
+              <%= date %>
+            </td>
+            <td>
+              <% var time = (data[i].starttime.toString()).slice(16, 24) %>
+              <%= time %>
+            </td>
             <td><%= data[i].minbid%></td>
             <td><%= data[i].numpassengers%></td>
             <form id="bid_form<%= i %>" action="trips" role="form" method="post">
-            <td><input type="text" class="form-control" id="promo" name="promo" placeholder="Enter Promocode if any" value="">
-            <td><input type="text" class="form-control" id="bid" name="bidamount" placeholder="0.00"><input type="hidden" id="hiddenBid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="bidsubmit" value="Bid"></td>
+              <td>
+                <input type="text" class="form-control" size="15" id="promo" name="promo" placeholder="Enter Promocode if any" value="">
+              <td>
+                <input type="text" class="form-control" size="10" id="bid" name="bidamount" placeholder="0.00">
+                <input type="hidden" id="hiddenBid" name="tidHidden" value="<%= data[i].tid%>">
+                <input type="submit" class="btn btn-success" name="bidsubmit" value="Bid">
+              </td>
             </form>
           </tr>
         <% } %>

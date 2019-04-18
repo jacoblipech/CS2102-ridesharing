@@ -7,12 +7,13 @@
     <%- include('partial/nav', {title: title, user: user}); %>
     <h1>View all trips that you have created</h1>
     <p>Here are your trips </p>
-    <table class="table">
+    <table class="table text-center">
       <thead>
         <tr>
-          <th scope="col">Pickup location</th>
-          <th scope="col">Drop off location</th>
-          <th scope="col">Pickup time</th>
+          <th scope="col">Pickup Location</th>
+          <th scope="col">Drop-off Location</th>
+          <th scope="col">Pickup Date</th>
+          <th scope="col">Pickup Time</th>
           <th scope="col">Trip Completed?</th>
         </tr>
       </thead>
@@ -21,9 +22,21 @@
           <tr>
             <td><%= data[i].origin%></td>
             <td><%= data[i].destination%></td>
-            <td><%= data[i].starttime%></td>
+            <td>
+              <% var date = (data[i].starttime.toString()).slice(0, 15) %>
+              <%= date %>
+            </td>
+            <td>
+              <% var time = (data[i].starttime.toString()).slice(16, 24) %>
+              <%= time %>
+            </td>
             <% if (data[i].iscomplete == false){ %>
-                <td><form id="bid_form<%= i %>" action="tripcomplete" role="form" method="post"><input type="hidden" id="hiddenTid" name="tidHidden" value="<%= data[i].tid%>"><input type="submit" name="tcomplete" value="Indicate Completed"></form></td>
+              <td>
+                <form id="bid_form<%= i %>" action="tripcomplete" role="form" method="post">
+                  <input type="hidden" id="hiddenTid" name="tidHidden" value="<%= data[i].tid%>">
+                  <input type="submit" class="btn btn-success" name="tcomplete" value="Indicate Completed">
+                </form>
+              </td>
             <% } else { %>
                 <td>Completed</td>
             <% } %>

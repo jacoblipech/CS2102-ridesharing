@@ -9,23 +9,37 @@
     <h4>Your wallet amount: $<%= user.balance %></h4>
     <p>Here are all the bids you made</p>
     <table class="table">
-      <thead>
+      <thead class="text-center">
         <tr>
-          <th scope="col">Pickup location</th>
-          <th scope="col">Drop off location</th>
-          <th scope="col">Pickup time</th>
+          <th scope="col">Pickup Location</th>
+          <th scope="col">Drop-off Location</th>
+          <th scope="col">Pickup Date</th>
+          <th scope="col">Pickup Time</th>
           <th scope="col">Your Bid</th>
           <th scope="col">Bid Accepted?</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="text-center">
         <% for(var i=0; i<data.length; i++) { %>
           <tr>
             <td><%= data[i].origin%></td>
             <td><%= data[i].destination%></td>
-            <td><%= data[i].starttime%></td>
-            <td><%= data[i].amount%></td>
-            <td><%= data[i].isconfirmed%></td>
+            <td>
+              <% var date = (data[i].starttime.toString()).slice(0, 15) %>
+              <%= date %>
+            </td>
+            <td>
+              <% var time = (data[i].starttime.toString()).slice(16, 24) %>
+              <%= time %>
+            </td>
+            <td>$<%= data[i].amount%></td>
+            <td>
+              <% if(!data[i].isconfirmed) { %>
+                No
+              <% } else { %>
+                Yes
+              <% } %>
+            </td>
           </tr>
         <% } %>
       </tbody>
