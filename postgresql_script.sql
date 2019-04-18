@@ -11,6 +11,7 @@ DROP TABLE Drivers;
 DROP TABLE Passengers;
 DROP TABLE Admin;
 DROP TABLE Users;
+DROP TABLE Assigns;
 
 
 
@@ -109,6 +110,12 @@ CREATE TABLE Promocodes (
 	code VARCHAR(20) UNIQUE,
 	expirydate TIMESTAMP NOT NULL,
 	discount REAL NOT NULL
+);
+
+CREATE TABLE Assigns (
+	prid INTEGER,
+	uid INTEGER,
+	PRIMARY KEY(prid, uid)
 );
 
 CREATE TABLE Address(
@@ -663,18 +670,6 @@ insert into Bids (uid, tid, amount, isconfirmed) values (15, 58, 18.16, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (20, 67, 50.91, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (5, 88, 13.19, false);
 insert into Bids (uid, tid, amount, isconfirmed) values (17, 61, 36.51, false);
-
-
-insert into Promocodes (prid, code, expirydate, discount) values (1, 'promo', '2020-03-22 15:09:15', 0.10);
-insert into Promocodes (prid, code, expirydate, discount) values (2, 'nvi1XAofavlr', '2020-03-22 22:39:02', 0.22);
-insert into Promocodes (prid, code, expirydate, discount) values (3, 'XzJA6nZP93v', '2020-03-22 08:11:00', 0.70);
-insert into Promocodes (prid, code, expirydate, discount) values (4, 'oDYHKBH0j', '2020-03-22 06:16:36', 0.8);
-insert into Promocodes (prid, code, expirydate, discount) values (5, 'JWM4uJt4hXcr', '2020-03-22 07:25:38', 0.5);
-insert into Promocodes (prid, code, expirydate, discount) values (6, '64KDg5Hc0kN', '2020-03-22 14:44:02', 0.23);
-insert into Promocodes (prid, code, expirydate, discount) values (7, 'o3VNqY0U', '2020-03-22 10:49:00', 0.9);
-insert into Promocodes (prid, code, expirydate, discount) values (8, '78wxzoK', '2020-03-22 17:23:40', 0.70);
-insert into Promocodes (prid, code, expirydate, discount) values (9, 'rB2vfwhdMJJ', '2020-03-22 13:17:20', 0.66);
-insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea', '2020-03-22 07:02:30', 0.6);
 insert into Bids (uid, tid, amount, paidamount, isconfirmed) values (7, 89, 65.91, 65.91, true);
 insert into Bids (uid, tid, amount, paidamount, isconfirmed) values (11, 17, 30.09, 30.09, true);
 insert into Bids (uid, tid, amount, paidamount, isconfirmed) values (11, 86, 16.30, 16.30, true);
@@ -688,6 +683,40 @@ insert into Bids (uid, tid, amount, paidamount, isconfirmed) values (12, 41, 46.
 insert into Bids (uid, tid, amount, paidamount, isconfirmed) values (18, 72, 23.32, 23.32, true);
 insert into Bids (uid, tid, amount, paidamount, isconfirmed) values (13, 74, 15.07, 15.07, true);
 insert into Bids (uid, tid, amount, paidamount, isconfirmed) values (11, 46, 57.30, 57.30, true);
+
+insert into Promocodes (prid, code, expirydate, discount) values (1, 'testpromo', '2020-03-22 15:09:15', 0.10);
+insert into Promocodes (prid, code, expirydate, discount) values (2, '20OFF', '2020-03-22 22:39:02', 0.20);
+insert into Promocodes (prid, code, expirydate, discount) values (3, '30OFF', '2020-03-22 08:11:00', 0.30);
+insert into Promocodes (prid, code, expirydate, discount) values (4, '40OFF', '2020-03-22 06:16:36', 0.40);
+insert into Promocodes (prid, code, expirydate, discount) values (5, '50OFF', '2020-03-22 07:25:38', 0.50);
+insert into Promocodes (prid, code, expirydate, discount) values (6, '60OFF', '2020-03-22 14:44:02', 0.60);
+insert into Promocodes (prid, code, expirydate, discount) values (7, '70OFF', '2020-03-22 10:49:00', 0.70);
+insert into Promocodes (prid, code, expirydate, discount) values (8, '80OFF', '2020-03-22 17:23:40', 0.80);
+insert into Promocodes (prid, code, expirydate, discount) values (9, '90OFF', '2020-03-22 13:17:20', 0.90);
+insert into Promocodes (prid, code, expirydate, discount) values (10, 'ALLOFF', '2020-03-22 07:02:30', 1.00);
+
+insert into Assigns (prid, uid) values (1, 5);
+insert into Assigns (prid, uid) values (1, 6);
+insert into Assigns (prid, uid) values (1, 7);
+insert into Assigns (prid, uid) values (1, 8);
+insert into Assigns (prid, uid) values (1, 9);
+insert into Assigns (prid, uid) values (1, 10);
+insert into Assigns (prid, uid) values (1, 11);
+insert into Assigns (prid, uid) values (1, 12);
+insert into Assigns (prid, uid) values (1, 13);
+insert into Assigns (prid, uid) values (1, 14);
+insert into Assigns (prid, uid) values (1, 15);
+insert into Assigns (prid, uid) values (2, 5);
+insert into Assigns (prid, uid) values (2, 6);
+insert into Assigns (prid, uid) values (2, 7);
+insert into Assigns (prid, uid) values (2, 8);
+insert into Assigns (prid, uid) values (2, 9);
+insert into Assigns (prid, uid) values (2, 10);
+insert into Assigns (prid, uid) values (2, 11);
+insert into Assigns (prid, uid) values (2, 12);
+insert into Assigns (prid, uid) values (2, 13);
+insert into Assigns (prid, uid) values (2, 14);
+insert into Assigns (prid, uid) values (2, 15);
 
 ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 

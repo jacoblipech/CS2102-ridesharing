@@ -36,16 +36,19 @@ router.get('/', isLoggedIn, function(req, res, next) {
 	});
 });
 
-const add_reward_query = "update users set balance = balance + ";
+const add_promocode_query = "insert into Assigns (prid, uid) values ((SELECT prid from Promocodes where code = '";
+
 router.post('/', function(req, res, next) {
   var email = req.body.email;
-	var reward = req.body.amount;
-	pool.query(add_reward_query + reward + " where email = '" + email + "';", (err, data) => {
+	var promocode = req.body.promocode;
+	var query = add_promocode_query + promocode + "') , (SELECT uid FROM Users where email = '" + email + "'));";
+	// console.log(query);
+	pool.query(query, (err, data) => {
 		if (err) {
 			next(err);
 		}
 		else{
-      res.redirect('/topdrivers');
+      res.redirect('/toppassengers');
 		}
 	});
 });
