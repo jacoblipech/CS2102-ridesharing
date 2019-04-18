@@ -71,7 +71,7 @@ router.post('/', function(req, res, next) {
         else {
             //redirect to /allTrips later
 
-            res.redirect("/trips")
+            res.redirect("/tripcomplete")
         }
     });
 });
