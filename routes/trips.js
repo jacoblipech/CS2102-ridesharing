@@ -32,9 +32,7 @@ router.get('/', isLoggedIn, function(req, res, next) {
 	});
 });
 
-
 // POST (happens upon submit)
-
 router.post('/', function(req, res, next) {
 	// Retrieve Information
 	var tid = req.body.tidHidden;

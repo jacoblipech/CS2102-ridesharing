@@ -691,7 +691,7 @@ insert into Promocodes (prid, code, expirydate, discount) values (10, '2Tf9Azmea
 
 ALTER TABLE Creates ALTER COLUMN created SET DEFAULT NOW();
 
-UPDATE Users SET Balance = 1000.00;
+UPDATE Users SET Balance = 100.00;
 
 --CREATE OR REPLACE FUNCTION add_to_passengers()
 --RETURNS TRIGGER AS $$

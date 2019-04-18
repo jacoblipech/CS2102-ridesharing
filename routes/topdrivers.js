@@ -14,10 +14,10 @@ function isLoggedIn(req, res, next) {
   res.redirect('/login');
 }
 
-const sql_query = "select U.name, U.email, U.phonenum, count(C.tid) as numTrips "
+const sql_query = "select U.name, U.email, U.balance, U.phonenum, count(C.tid) as numTrips "
                 + "from (users U natural join drivers) natural join (creates C natural join Trips T) "
                 + "where T.iscomplete = TRUE "
-                + "group by U.name, U.email, U.phonenum "
+                + "group by U.name, U.email, U.balance, U.phonenum "
                 + "order by numTrips DESC "
                 + "limit 10; ";
 
@@ -36,16 +36,16 @@ router.get('/', isLoggedIn, function(req, res, next) {
 	});
 });
 
-const add_reward_query = "update users set balance = balance + 10 where email = '";
-
+const add_reward_query = "update users set balance = balance + ";
 router.post('/', function(req, res, next) {
   var email = req.body.email;
-	pool.query(add_reward_query + email + "';", (err, data) => {
+	var reward = req.body.amount;
+	pool.query(add_reward_query + reward + " where email = '" + email + "';", (err, data) => {
 		if (err) {
 			next(err);
 		}
 		else{
-      res.redirect('/admin');
+      res.redirect('/topdrivers');
 		}
 	});
 });
