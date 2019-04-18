@@ -15,6 +15,7 @@
           <th scope="col">Drop-off Location</th>
           <th scope="col">Pickup Date</th>
           <th scope="col">Pickup Time</th>
+          <th scope="col">Paid Amount</th>
           <th scope="col">Your Bid</th>
           <th scope="col">Bid Accepted?</th>
         </tr>
@@ -32,6 +33,7 @@
               <% var time = (data[i].starttime.toString()).slice(16, 24) %>
               <%= time %>
             </td>
+            <td>$<%= data[i].paidamount%></td>
             <td>$<%= data[i].amount%></td>
             <td>
               <% if(!data[i].isconfirmed) { %>
