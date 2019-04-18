@@ -34,6 +34,7 @@ var manypsgRouter = require('./routes/toomanypassengers');
 /* --- V8: Drivers and Passenger Sign up  --- */
 var driverRouter = require('./routes/driver');
 var topdriversRouter = require('./routes/topdrivers');
+var toppassengersRouter = require('./routes/toppassengers');
 var carexistsRouter = require('./routes/carplateexists');
 /* ---------------------------- */
 
@@ -77,6 +78,7 @@ app.use('/profile', profileRouter);
 app.use('/admin', adminRouter);
 app.use('/deleteuser', deleteuserRouter);
 app.use('/topdrivers', topdriversRouter);
+app.use('/toppassengers', toppassengersRouter);
 
 /* --- V6: Adding Create Trip Form     --- */
 app.use('/createTrip', createTripRouter);

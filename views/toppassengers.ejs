@@ -5,16 +5,15 @@
   </head>
   <body>
     <%- include('partial/nav', {title: title, user: user}); %>
-    <h1>A list of top drivers with completed trips</h1>
+    <h1>A list of top passengers with amount spent</h1>
     <table class="table text-center">
       <thead>
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Email</th>
-          <th scope="col">Wallet</th>
           <th scope="col">Phone Number</th>
-          <th scope="col">Number of Completed Trips</th>
-          <th scope="col">Reward</th>
+          <th scope="col">Total Spent</th>
+          <th scope="col">Give PromoCode?</th>
         </tr>
       </thead>
       <tbody>
@@ -22,14 +21,13 @@
           <tr>
             <td><%= data[i].name%></td>
             <td><%= data[i].email%></td>
-            <td>$<%= data[i].balance%></td>
             <td><%= data[i].phonenum%></td>
-            <td><%= data[i].numtrips %></td>
+            <td>$<%= data[i].totalpaid%></td>
             <td>
-              <form action="/topdrivers" role="form" method="post">
+              <form action="/toppassengers" role="form" method="post">
                 <input type="hidden" name="email" value="<%= data[i].email%>">
-                <input type="text" class="form-control" size="5" id="amound" name="amount" placeholder="0.00">
-                <input type="submit" class="btn btn-success" name="reward" value="Reward">
+                <input type="text" class="form-control" size="15" name="amount" placeholder="e.g. 10OFF">
+                <input type="submit" class="btn btn-success" name="promocode" value="Give Code">
               </form>
             </td>
           </tr>
