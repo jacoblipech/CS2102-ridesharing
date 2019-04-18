@@ -52,4 +52,26 @@ router.post('/', function(req, res, next) {
 	});
 });
 
+// POST (happens upon submit)
+var create_promo_query = "insert into Promocodes (prid, code, expirydate, discount) values (";
+router.post('/promocode', function(req, res, next) {
+	// Retrieve Information
+	var prid = req.body.prid;
+	var code = req.body.code;
+	var expirydate = req.body.expirydate;
+	var discount = req.body.discount;
+
+	var query = create_promo_query + prid + ", '" + code + "', '" + expirydate + "', " + discount + ");";
+	console.log(query);
+	// Construct Specific SQL Query
+	pool.query(query, (err, data) => {
+    if (err) {
+      next(err);
+    }
+    else {
+      res.redirect('/admin')
+    }
+	});
+});
+
 module.exports = router;

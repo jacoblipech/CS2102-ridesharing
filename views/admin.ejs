@@ -25,16 +25,37 @@
     			</div>
           <div class="form-group">
     				<label for="phoneNumber">Phone Number:</label>
-    				<input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your handphone number">
+    				<input type="text" size="20" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your handphone number">
     			</div>
-    			<button type="submit" class="btn btn-primary">Submit</button>
+    			<button type="submit" class="btn btn-success">Submit</button>
+          <button style="margin-left:150px" type="button" class="btn btn-primary" data-toggle="modal" data-target="#usersListModal">Show a list of users</button>
     		</form>
+        <br>
+        <form action="admin/promocode" role="form" method="post">
+          <div class="form-group">
+            <label for="prid">Prid:</label>
+            <input type="number" class="form-control" name="prid">
+          </div>
+          <div class="form-group">
+    				<label for="code">Code:</label>
+    				<input type="text" class="form-control" name="code">
+    			</div>
+    			<div class="form-group">
+    				<label for="expirydate">Expiry Date:</label>
+            <input type="datetime-local" class="form-control" name="expirydate">
+    			</div>
+          <div class="form-group">
+            <label for="discount">Discount:</label>
+            <input type="text" class="form-control" name="discount">
+          </div>
+          <button type="submit" class="btn btn-success">Create Promo Code</button>
+        </form>
       </div>
       <div class="col-sm-6">
-        <h2> Here are a few modals to view different types of data: </h2>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#usersListModal">Show a list of users</button>
+        <h2> Here are a few pages to analysis data result: </h2>
+        <br>
         <a class="btn btn-primary" href="/topdrivers">Show top drivers list</a>
-        <a class="btn btn-primary" href="/toppassengers">Show top passengers list</a>
+        <a style="margin-left:150px" class="btn btn-primary" href="/toppassengers">Show top passengers list</a>
       </div>
     </div>
     <br>
